@@ -8,9 +8,9 @@
 <GridLayout
     android:layout_width="368dp"
     android:layout_height="495dp"
-    android:rowCount="16"
+    android:rowCount="8"
     android:id="@+id/grid"
-    android:columnCount="16"
+    android:columnCount="8"
     >
 
 </GridLayout>
