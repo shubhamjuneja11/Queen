@@ -12,12 +12,11 @@ import android.widget.LinearLayout;
 
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener {
 GridLayout gridLayout;
-    Button button,button_set[][];
-    int i,height,width,totalbuttons,rowlimit;
-    boolean j;
+    Button button_set[][];
+    int i,height,width,totalbuttons,rowlimit,j,total_queens;
     boolean decide;
     DisplayMetrics displayMetrics;
-    int buttons_state[][];
+    boolean buttons_state[][];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +24,10 @@ GridLayout gridLayout;
         gridLayout=(GridLayout)findViewById(R.id.grid);
         displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        j=true;
         decide=true;
+        total_queens=0;
         rowlimit=8;
-        buttons_state=new int[rowlimit][rowlimit];
+        buttons_state=new boolean[rowlimit][rowlimit];
         decideFactor();
     }
     public void decideFactor(){
@@ -40,7 +39,7 @@ GridLayout gridLayout;
         boardsetup();
     }
     public void boardsetup(){
-        int i,j;
+
         button_set=new Button[rowlimit][rowlimit];
         for(i=0;i<rowlimit;i++)
         {
@@ -57,23 +56,25 @@ GridLayout gridLayout;
             decide=!decide;
         }
     }
-    /*public void boardsetup(){
-        for(i=0;i<totalbuttons;i++){
-            if(i%rowlimit==0&&i>0)j=!j;
-            button=new Button(this);
-            button.setLayoutParams(new LinearLayout.LayoutParams(width,width));
-            if(j)
-                button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            else  button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            j=!j;
-            gridLayout.addView(button);
-            button.setOnClickListener(this);
-
-        }
-    }*/
-
     @Override
     public void onClick(View v) {
 
+            for (i = 0; i < rowlimit; i++)
+                for (j = 0; j < rowlimit; j++)
+                    if (button_set[i][j] == v) {
+                        if (buttons_state[i][j]) {
+                            if (i % 2 == 0 && j % 2 == 0 || i % 2 != 0 && j % 2 != 0)
+                                v.setBackgroundResource(R.color.colorAccent);
+                            else v.setBackgroundResource(R.color.colorPrimary);
+                            total_queens--;
+                            buttons_state[i][j] = !buttons_state[i][j];
+                        } else {
+                            if(total_queens<rowlimit) {
+                                total_queens++;
+                                v.setBackgroundResource(R.drawable.queen);
+                                buttons_state[i][j] = !buttons_state[i][j];
+                            }
+                        }
+                    }
     }
 }
