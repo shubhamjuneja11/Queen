@@ -1,56 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.junejaspc.queen.LevelActivity">
-<android.support.v7.widget.CardView
-    android:layout_width="368dp"
-    android:layout_height="wrap_content"
-   >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="LEVEL 1"
-        android:textSize="30dp"
-        android:id="@+id/tv"
-
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="4X4"
-        android:textSize="30dp"
-        android:layout_below="@+id/tv"
-        />
-    </RelativeLayout>
-</android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
-        >
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="LEVEL 1"
-                android:textSize="30dp"
-                android:id="@+id/tv2"
-
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="4X4"
-                android:textSize="30dp"
-                android:layout_below="@+id/tv2"
-                />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-</android.support.constraint.ConstraintLayout>
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:id="@+id/recycler"
+    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+</RelativeLayout>
