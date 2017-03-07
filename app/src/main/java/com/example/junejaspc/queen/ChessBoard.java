@@ -72,6 +72,7 @@ GridLayout gridLayout;
                 gridLayout.addView(button_set[i][j]);
                 button_set[i][j].setOnClickListener(this);
             }
+            if(rowlimit%2==0)
             decide=!decide;
         }
     }
