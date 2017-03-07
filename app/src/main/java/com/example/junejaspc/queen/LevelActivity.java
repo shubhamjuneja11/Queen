@@ -21,12 +21,20 @@ LevelAdapter adapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level);
-        lev=new String[5];
+        lev=new String[13];
         lev[0]="4x4";
         lev[1]="5x5";
         lev[2]="6x6";
         lev[3]="7x7";
         lev[4]="8x8";
+        lev[5]="9x9";
+        lev[6]="10x10";
+        lev[7]="11x11";
+        lev[8]="12x12";
+        lev[9]="13x13";
+        lev[10]="14x14";
+        lev[11]="15x15";
+        lev[12]="16x16";
         recyclerView=(RecyclerView)findViewById(R.id.recycler);
         levels=new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -42,6 +50,14 @@ LevelAdapter adapter;
         levels.add(new LevelClass(3,"Level 3","6x6"));
         levels.add(new LevelClass(4,"Level 4","7x7"));
         levels.add(new LevelClass(5,"Level 5","8x8"));
+        levels.add(new LevelClass(5,"Level 6","9x9"));
+        levels.add(new LevelClass(5,"Level 7","10x10"));
+        levels.add(new LevelClass(5,"Level 8","11x11"));
+        levels.add(new LevelClass(5,"Level 9","12x12"));
+        levels.add(new LevelClass(5,"Level 10","13x13"));
+        levels.add(new LevelClass(5,"Level 11","14x14"));
+        levels.add(new LevelClass(5,"Level 12","15x15"));
+        levels.add(new LevelClass(5,"Level 13","16x16"));
         adapter.notifyDataSetChanged();
     }
 
@@ -52,7 +68,6 @@ LevelAdapter adapter;
         for(int i=0;i<lev.length;i++){
             if(mylevel.equals(lev[i]))
             {a=i+4;break;}
-
         }
         Intent intent=new Intent(LevelActivity.this,ChessBoard.class);
         intent.putExtra("count",a);

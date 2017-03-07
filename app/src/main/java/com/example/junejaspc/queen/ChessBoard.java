@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener {
 GridLayout gridLayout;
@@ -91,13 +92,16 @@ GridLayout gridLayout;
                             buttons_state[i][j] = !buttons_state[i][j];
                             check_status(i,j);
                         } else {
+
                             if(total_queens<rowlimit) {
-                                total_queens++;
+                                total_queens++; Log.e("aaaaaaaa",total_queens+" "+rowlimit);
                                 ((ImageButton)v).setImageResource(R.drawable.queen);
                                 //v.setBackgroundResource(R.drawable.queen);
                                 buttons_state[i][j] = !buttons_state[i][j];
                                 //mark_danger(i,j);
                                 check_status(i,j);
+                                if(total_queens==rowlimit)
+                                    check_completed();
                             }
                         }
                     }
@@ -161,51 +165,17 @@ GridLayout gridLayout;
         }
         return true;
     }
-    public void mark_danger(int m,int n){
+    public void check_completed(){
+        boolean flag=true;
         int i,j;
-        //vertically
-        for(i=0;i<rowlimit;i++){
-            if(buttons_state[i][n]&&i!=m)
-            {
-                button_set[i][n].setBackgroundDrawable(shape3);
-                button_set[m][n].setBackgroundDrawable(shape3);
-            }
-        }
-        //horizontally
-        for(i=0;i<rowlimit;i++){
-            if(buttons_state[m][i]&&i!=n){
-                button_set[m][i].setBackgroundDrawable(shape3);
-                button_set[m][n].setBackgroundDrawable(shape3);
-            }
-        }
-        for(i=m,j=n;i<rowlimit&&j<rowlimit;i++,j++) {
-            if(buttons_state[i][j]&&(i!=m&&j!=n))
-            {
-                button_set[i][j].setBackgroundDrawable(shape3);
-                button_set[m][n].setBackgroundDrawable(shape3);
-            }
-        }
-        for(i=m,j=n;i>=0&&j>=0;i--,j--)
-        {if(buttons_state[i][j]&&(i!=m&&j!=n))
-        {
-            button_set[i][j].setBackgroundDrawable(shape3);
-            button_set[m][n].setBackgroundDrawable(shape3);
-        }
-        }
-        for(i=m,j=n;i<rowlimit&&j>=0;i++,j--) {
-            if(buttons_state[i][j]&&(i!=m&&j!=n))
-            {
-                button_set[i][j].setBackgroundDrawable(shape3);
-                button_set[m][n].setBackgroundDrawable(shape3);
-            }
-        }
-        for(i=m,j=n;i>=0&&j<rowlimit;i--,j++)
-        {
-            if(buttons_state[i][j]&&(i!=m&&j!=n))
-            {
-                button_set[i][j].setBackgroundDrawable(shape3);
-                button_set[m][n].setBackgroundDrawable(shape3);
-            }
-        }
+        outerloop:for(i=0;i<rowlimit;i++)
+            for(j=0;j<rowlimit;j++)
+                if(buttons_state[i][j])
+                    if(!mark_status(i,j))
+                    {
+                        flag=false;
+                        break outerloop;
+                    }
+            if(flag) Toast.makeText(this, "Congrats", Toast.LENGTH_SHORT).show();
     }
 }
