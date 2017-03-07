@@ -14,15 +14,17 @@ import java.util.List;
 
 public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> {
     public TextView name,size;
+    LevelActivity levelClass;
     List<LevelClass> levels;
-    public LevelAdapter(List<LevelClass> levels){
+    public LevelAdapter(LevelActivity levelClass,List<LevelClass> levels){
         this.levels=levels;
+        this.levelClass=levelClass;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.levelrow, parent, false);
-
+        itemView.setOnClickListener(levelClass);
         return new ViewHolder(itemView);
     }
 

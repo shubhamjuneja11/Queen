@@ -40,7 +40,8 @@ GridLayout gridLayout;
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         decide=true;
         total_queens=0;
-        rowlimit=8;
+       // rowlimit=8;
+        rowlimit=getIntent().getIntExtra("count",9);
         buttons_state=new boolean[rowlimit][rowlimit];
         decideFactor();
     }

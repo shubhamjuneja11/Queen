@@ -21,12 +21,14 @@ public class LevelClass {
         this.count = count;
     }
 
-    public LevelClass(String levelno, String count) {
-
+    private String levelno,count;
+    private int level;
+    public LevelClass(int level,String levelno, String count) {
         this.levelno = levelno;
         this.count = count;
+        this.level = level;
     }
 
-    private String levelno,count;
+
 
 }
