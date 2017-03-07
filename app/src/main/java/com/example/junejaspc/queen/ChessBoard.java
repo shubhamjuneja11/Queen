@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener {
 GridLayout gridLayout;
-    Button button_set[][];
+    ImageButton button_set[][];
     int i,height,width,totalbuttons,rowlimit,j,total_queens;
     boolean decide;
     DisplayMetrics displayMetrics;
@@ -54,16 +54,16 @@ GridLayout gridLayout;
     }
     public void boardsetup(){
 
-        button_set=new Button[rowlimit][rowlimit];
+        button_set=new ImageButton[rowlimit][rowlimit];
         for(i=0;i<rowlimit;i++)
         {
             for(j=0;j<rowlimit;j++){
-               button_set[i][j]=new Button(this);
+               button_set[i][j]=new ImageButton(this);
+
                 button_set[i][j].setLayoutParams(new LinearLayout.LayoutParams(width,width));
                 if(decide) {//button_set[i][j].setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     button_set[i][j].setBackgroundDrawable(shapeDrawable);
                 }else {
-                    Log.e("ggggg","gggggggg");
                     //button_set[i][j].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     button_set[i][j].setBackgroundDrawable(shape2);
 
@@ -82,41 +82,128 @@ GridLayout gridLayout;
                     if (button_set[i][j] == v) {
                         if (buttons_state[i][j]) {
                             if (i % 2 == 0 && j % 2 == 0 || i % 2 != 0 && j % 2 != 0)
-                                v.setBackgroundResource(R.color.colorAccent);
-                            else v.setBackgroundResource(R.color.colorPrimary);
+                                v.setBackgroundDrawable(shapeDrawable);
+                            else v.setBackgroundDrawable(shape2);
+                            ((ImageButton)v).setImageResource(0);
                             total_queens--;
                             buttons_state[i][j] = !buttons_state[i][j];
+                            check_status(i,j);
                         } else {
                             if(total_queens<rowlimit) {
                                 total_queens++;
-                                v.setBackgroundResource(R.drawable.queen);
+                                ((ImageButton)v).setImageResource(R.drawable.queen);
+                                //v.setBackgroundResource(R.drawable.queen);
                                 buttons_state[i][j] = !buttons_state[i][j];
-                                mark_danger(i,j);
+                                //mark_danger(i,j);
+                                check_status(i,j);
                             }
                         }
                     }
+    }
+    public void check_status(int m,int n){
+       int i,j;
+        for(i=0;i<rowlimit;i++){
+            for(j=0;j<rowlimit;j++){
+                if(buttons_state[i][j]){
+                    if(!mark_status(i,j)){
+                        button_set[i][j].setBackgroundDrawable(shape3);
+                    }
+                    else{
+                        if (i % 2 == 0 && j % 2 == 0 || i % 2 != 0 && j % 2 != 0)
+                            button_set[i][j].setBackgroundDrawable(shapeDrawable);
+                        else button_set[i][j].setBackgroundDrawable(shape2);
+                    }
+                }
+            }
+        }
+    }
+    public boolean mark_status(int m,int n){
+        int i,j;
+        //vertically
+        for(i=0;i<rowlimit;i++){
+            if(buttons_state[i][n]&&i!=m)
+            {
+                return false;
+            }
+        }
+        //horizontally
+        for(i=0;i<rowlimit;i++){
+            if(buttons_state[m][i]&&i!=n){
+                return false;
+            }
+        }
+        for(i=m,j=n;i<rowlimit&&j<rowlimit;i++,j++) {
+            if(buttons_state[i][j]&&(i!=m&&j!=n))
+            {
+               return false;
+            }
+        }
+        for(i=m,j=n;i>=0&&j>=0;i--,j--)
+        {if(buttons_state[i][j]&&(i!=m&&j!=n))
+        {
+            return false;
+        }
+        }
+        for(i=m,j=n;i<rowlimit&&j>=0;i++,j--) {
+            if(buttons_state[i][j]&&(i!=m&&j!=n))
+            {
+                return false;
+            }
+        }
+        for(i=m,j=n;i>=0&&j<rowlimit;i--,j++)
+        {
+            if(buttons_state[i][j]&&(i!=m&&j!=n))
+            {
+               return false;
+            }
+        }
+        return true;
     }
     public void mark_danger(int m,int n){
         int i,j;
         //vertically
         for(i=0;i<rowlimit;i++){
-            if(i!=m)
-            button_set[i][n].setBackgroundDrawable(shape3);
+            if(buttons_state[i][n]&&i!=m)
+            {
+                button_set[i][n].setBackgroundDrawable(shape3);
+                button_set[m][n].setBackgroundDrawable(shape3);
+            }
         }
         //horizontally
         for(i=0;i<rowlimit;i++){
-            if(i!=n)
-            button_set[m][i].setBackgroundDrawable(shape3);
+            if(buttons_state[m][i]&&i!=n){
+                button_set[m][i].setBackgroundDrawable(shape3);
+                button_set[m][n].setBackgroundDrawable(shape3);
+            }
         }
-        for(i=m,j=n;i<rowlimit&&j<rowlimit;i++,j++)
-            button_set[i][j].setBackgroundDrawable(shape3);
-
+        for(i=m,j=n;i<rowlimit&&j<rowlimit;i++,j++) {
+            if(buttons_state[i][j]&&(i!=m&&j!=n))
+            {
+                button_set[i][j].setBackgroundDrawable(shape3);
+                button_set[m][n].setBackgroundDrawable(shape3);
+            }
+        }
         for(i=m,j=n;i>=0&&j>=0;i--,j--)
+        {if(buttons_state[i][j]&&(i!=m&&j!=n))
+        {
             button_set[i][j].setBackgroundDrawable(shape3);
-        for(i=m,j=n;i<rowlimit&&j>=0;i++,j--)
-            button_set[i][j].setBackgroundDrawable(shape3);
-
+            button_set[m][n].setBackgroundDrawable(shape3);
+        }
+        }
+        for(i=m,j=n;i<rowlimit&&j>=0;i++,j--) {
+            if(buttons_state[i][j]&&(i!=m&&j!=n))
+            {
+                button_set[i][j].setBackgroundDrawable(shape3);
+                button_set[m][n].setBackgroundDrawable(shape3);
+            }
+        }
         for(i=m,j=n;i>=0&&j<rowlimit;i--,j++)
-            button_set[i][j].setBackgroundDrawable(shape3);
+        {
+            if(buttons_state[i][j]&&(i!=m&&j!=n))
+            {
+                button_set[i][j].setBackgroundDrawable(shape3);
+                button_set[m][n].setBackgroundDrawable(shape3);
+            }
+        }
     }
 }
