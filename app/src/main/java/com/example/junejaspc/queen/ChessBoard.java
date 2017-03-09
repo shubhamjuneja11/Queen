@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -23,13 +24,16 @@ GridLayout gridLayout;
     DisplayMetrics displayMetrics;
     boolean buttons_state[][];
     GradientDrawable shapeDrawable,shape2,shape3;
+    String colors[]=new String[]{"#7333BF","#CB2A62","#A8AD1F","#D34B20","#649035","#359053",
+                                 "#31B0AF","#2C65A9","#13EBE8","#969734","#ED04FC","#FC0488","#0480FC"   };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
+        rowlimit=getIntent().getIntExtra("count",4);
         shapeDrawable=new GradientDrawable();
         shapeDrawable.setStroke(1,getResources().getColor(R.color.black));
-        shapeDrawable.setColor(Color.parseColor("#000000"));
+        shapeDrawable.setColor(Color.parseColor(colors[rowlimit-4]));
         shape2=new GradientDrawable();
         shape3=new GradientDrawable();
         shape2.setStroke(1,getResources().getColor(R.color.black));
@@ -42,7 +46,7 @@ GridLayout gridLayout;
         decide=true;
         total_queens=0;
        // rowlimit=8;
-        rowlimit=getIntent().getIntExtra("count",9);
+
         buttons_state=new boolean[rowlimit][rowlimit];
         decideFactor();
     }
@@ -61,7 +65,8 @@ GridLayout gridLayout;
         {
             for(j=0;j<rowlimit;j++){
                button_set[i][j]=new ImageButton(this);
-
+                button_set[i][j].setScaleType(ImageView.ScaleType.CENTER_CROP);
+                //button_set[i][j].setAdjustViewBounds(true);
                 button_set[i][j].setLayoutParams(new LinearLayout.LayoutParams(width,width));
                 if(decide) {//button_set[i][j].setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     button_set[i][j].setBackgroundDrawable(shapeDrawable);
