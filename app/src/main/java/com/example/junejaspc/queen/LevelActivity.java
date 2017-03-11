@@ -28,7 +28,7 @@ LevelAdapter adapter;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         collapsingToolbarLayout=(CollapsingToolbarLayout)findViewById(R.id.collapse_toolbar);
-        collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this,R.color.colorAccent));
+        collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this,R.color.colorPrimary));
         lev=new String[13];
         lev[0]="4x4";
         lev[1]="5x5";
