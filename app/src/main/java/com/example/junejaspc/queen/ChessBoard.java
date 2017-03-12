@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -29,6 +30,7 @@ GridLayout gridLayout;
     TextView time;
     DisplayMetrics displayMetrics;
     boolean buttons_state[][];
+     Runnable startTimer;
     GradientDrawable shapeDrawable,shape2,shape3;
     String colors[]=new String[]{"#7333BF","#CB2A62","#A8AD1F","#D34B20","#649035","#359053",
                                  "#31B0AF","#2C65A9","#13EBE8","#969734","#ED04FC","#FC0488","#0480FC"   };
@@ -63,7 +65,7 @@ GridLayout gridLayout;
 
         buttons_state=new boolean[rowlimit][rowlimit];
         decideFactor();
-        tick_tock();
+        //tick_tock();
         MobileAds.initialize(getApplicationContext(),"ca-app-pub-5750055305709604~2904023779");
         AdView mAdView = (AdView) findViewById(R.id.adView);
         //AdRequest adRequest = new AdRequest.Builder().build();
@@ -205,13 +207,19 @@ GridLayout gridLayout;
                         flag=false;
                         break outerloop;
                     }
-            if(flag) Toast.makeText(this, "Congrats", Toast.LENGTH_SHORT).show();
+            if(flag){stop_tick_tock(); //Toast.makeText(this, "Congrats", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                View view=getLayoutInflater().inflate(R.layout.congrats_dialog,null);
+                builder.setView(view);
+                AlertDialog dialog=builder.create();
+                dialog.show();
+            }
     }
     public void tick_tock(){
         try {
             elapsedTime=0;
             startTime = System.currentTimeMillis();
-            final Runnable startTimer = new Runnable() {
+             startTimer= new Runnable() {
                 public void run() {
                     elapsedTime = System.currentTimeMillis() - startTime;
                     updateTimer(elapsedTime);
@@ -223,6 +231,9 @@ GridLayout gridLayout;
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+    public void stop_tick_tock(){
+        mHandler.removeCallbacks(startTimer);
     }
     private void updateTimer (float time){
         secs = (long)(time/1000);
@@ -262,25 +273,18 @@ GridLayout gridLayout;
         if(hrs <10 && hrs > 0){
             hours = "0"+hours;
         }
-
-    	/* Although we are not using milliseconds on the timer in this example
-    	 * I included the code in the event that you wanted to include it on your own
-    	 */
-        //Toast.makeText(this,time+"", Toast.LENGTH_SHORT).show();
         milliseconds = String.valueOf((long)time);
-//        milliseconds=milliseconds.substring(milliseconds.length()-2,milliseconds.length()-1);
         if(milliseconds.length()==2){
             milliseconds = "0"+milliseconds;
         }
         if(milliseconds.length()<=1){
             milliseconds = "00";
         }
-        //Toast.makeText(this,milliseconds.length()+"", Toast.LENGTH_SHORT).show();
-        //milliseconds=milliseconds.substring(1,milliseconds.length()-1);
         if(milliseconds.length()>=3)
         milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-1);
 
 		/* Setting the timer text to the elapsed time */
         this.time.setText(hours + ":" + minutes + ":" + seconds+"." + milliseconds);
     }
+
 }
