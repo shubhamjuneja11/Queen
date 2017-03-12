@@ -1,5 +1,6 @@
 package com.example.junejaspc.queen;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -16,8 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -31,6 +30,7 @@ GridLayout gridLayout;
     DisplayMetrics displayMetrics;
     boolean buttons_state[][];
      Runnable startTimer;
+    AlertDialog dialog;
     GradientDrawable shapeDrawable,shape2,shape3;
     String colors[]=new String[]{"#7333BF","#CB2A62","#A8AD1F","#D34B20","#649035","#359053",
                                  "#31B0AF","#2C65A9","#13EBE8","#969734","#ED04FC","#FC0488","#0480FC"   };
@@ -66,7 +66,7 @@ GridLayout gridLayout;
         buttons_state=new boolean[rowlimit][rowlimit];
         decideFactor();
         //tick_tock();
-        MobileAds.initialize(getApplicationContext(),"ca-app-pub-5750055305709604~2904023779");
+        /*MobileAds.initialize(getApplicationContext(),"ca-app-pub-5750055305709604~2904023779");
         AdView mAdView = (AdView) findViewById(R.id.adView);
         //AdRequest adRequest = new AdRequest.Builder().build();
         AdRequest request =
@@ -74,7 +74,7 @@ GridLayout gridLayout;
                 .addTestDevice(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
                         .build();
 
-        mAdView.loadAd(request);
+        mAdView.loadAd(request);*/
     }
     public void decideFactor(){
         totalbuttons=rowlimit*rowlimit;
@@ -211,7 +211,7 @@ GridLayout gridLayout;
                 AlertDialog.Builder builder=new AlertDialog.Builder(this);
                 View view=getLayoutInflater().inflate(R.layout.congrats_dialog,null);
                 builder.setView(view);
-                AlertDialog dialog=builder.create();
+               dialog=builder.create();
                 dialog.show();
             }
     }
@@ -283,8 +283,22 @@ GridLayout gridLayout;
         if(milliseconds.length()>=3)
         milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-1);
 
-		/* Setting the timer text to the elapsed time */
         this.time.setText(hours + ":" + minutes + ":" + seconds+"." + milliseconds);
     }
+public void mynewgame(View view){
+recreate();
 
+    dialog.dismiss();
+}
+    public void anotherlevel(View view){
+        Intent intent=new Intent(this,LevelActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    public void onleaderboard(View view){
+    Intent intent=new Intent(this,LeaderBoardActivity.class);
+        intent.putExtra("count",rowlimit);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -2,6 +2,8 @@ package com.example.junejaspc.queen;
 
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,4 +88,22 @@ LevelAdapter adapter;
         intent.putExtra("count",a);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+
+        try {
+            Intent upIntent=NavUtils.getParentActivityIntent(this);;
+            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+
+                TaskStackBuilder.create(this)
+                        .addNextIntentWithParentStack(upIntent)
+                        .startActivities();
+            } else {
+
+                NavUtils.navigateUpTo(this, upIntent);
+            }
+
+        } catch (Exception e) {
+        }    }
 }
