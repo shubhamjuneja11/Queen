@@ -4,40 +4,47 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-import static java.security.AccessController.getContext;
-
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener {
 GridLayout gridLayout;
     ImageButton button_set[][];
     int i,height,width,totalbuttons,rowlimit,j,total_queens;
     boolean decide;
+    TextView time;
     DisplayMetrics displayMetrics;
     boolean buttons_state[][];
     GradientDrawable shapeDrawable,shape2,shape3;
     String colors[]=new String[]{"#7333BF","#CB2A62","#A8AD1F","#D34B20","#649035","#359053",
                                  "#31B0AF","#2C65A9","#13EBE8","#969734","#ED04FC","#FC0488","#0480FC"   };
+
+    private final int REFRESH_RATE = 1;
+    private String hours,minutes,seconds,milliseconds;
+    private long secs,mins,hrs,msecs;
+    private long elapsedTime,startTime;
+    private Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
         rowlimit=getIntent().getIntExtra("count",4);
+        time=(TextView)findViewById(R.id.mytime);
         shapeDrawable=new GradientDrawable();
         shapeDrawable.setStroke(1,getResources().getColor(R.color.black));
         shapeDrawable.setColor(Color.parseColor(colors[rowlimit-4]));
@@ -56,6 +63,7 @@ GridLayout gridLayout;
 
         buttons_state=new boolean[rowlimit][rowlimit];
         decideFactor();
+        tick_tock();
         MobileAds.initialize(getApplicationContext(),"ca-app-pub-5750055305709604~2904023779");
         AdView mAdView = (AdView) findViewById(R.id.adView);
         //AdRequest adRequest = new AdRequest.Builder().build();
@@ -115,7 +123,7 @@ GridLayout gridLayout;
                         } else {
 
                             if(total_queens<rowlimit) {
-                                total_queens++; Log.e("aaaaaaaa",total_queens+" "+rowlimit);
+                                total_queens++;
                                 ((ImageButton)v).setImageResource(R.drawable.queen);
                                 //v.setBackgroundResource(R.drawable.queen);
                                 buttons_state[i][j] = !buttons_state[i][j];
@@ -198,5 +206,81 @@ GridLayout gridLayout;
                         break outerloop;
                     }
             if(flag) Toast.makeText(this, "Congrats", Toast.LENGTH_SHORT).show();
+    }
+    public void tick_tock(){
+        try {
+            elapsedTime=0;
+            startTime = System.currentTimeMillis();
+            final Runnable startTimer = new Runnable() {
+                public void run() {
+                    elapsedTime = System.currentTimeMillis() - startTime;
+                    updateTimer(elapsedTime);
+                    mHandler.postDelayed(this, REFRESH_RATE);
+                }
+            };
+        startTimer.run();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void updateTimer (float time){
+        secs = (long)(time/1000);
+        mins = (long)((time/1000)/60);
+        hrs = (long)(((time/1000)/60)/60);
+
+		/* Convert the seconds to String
+		 * and format to ensure it has
+		 * a leading zero when required
+		 */
+        secs = secs % 60;
+        seconds=String.valueOf(secs);
+        if(secs == 0){
+            seconds = "00";
+        }
+        if(secs <10 && secs > 0){
+            seconds = "0"+seconds;
+        }
+
+		/* Convert the minutes to String and format the String */
+
+        mins = mins % 60;
+        minutes=String.valueOf(mins);
+        if(mins == 0){
+            minutes = "00";
+        }
+        if(mins <10 && mins > 0){
+            minutes = "0"+minutes;
+        }
+
+    	/* Convert the hours to String and format the String */
+
+        hours=String.valueOf(hrs);
+        if(hrs == 0){
+            hours = "00";
+        }
+        if(hrs <10 && hrs > 0){
+            hours = "0"+hours;
+        }
+
+    	/* Although we are not using milliseconds on the timer in this example
+    	 * I included the code in the event that you wanted to include it on your own
+    	 */
+        //Toast.makeText(this,time+"", Toast.LENGTH_SHORT).show();
+        milliseconds = String.valueOf((long)time);
+//        milliseconds=milliseconds.substring(milliseconds.length()-2,milliseconds.length()-1);
+        if(milliseconds.length()==2){
+            milliseconds = "0"+milliseconds;
+        }
+        if(milliseconds.length()<=1){
+            milliseconds = "00";
+        }
+        //Toast.makeText(this,milliseconds.length()+"", Toast.LENGTH_SHORT).show();
+        //milliseconds=milliseconds.substring(1,milliseconds.length()-1);
+        if(milliseconds.length()>=3)
+        milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-1);
+
+		/* Setting the timer text to the elapsed time */
+        this.time.setText(hours + ":" + minutes + ":" + seconds+"." + milliseconds);
     }
 }

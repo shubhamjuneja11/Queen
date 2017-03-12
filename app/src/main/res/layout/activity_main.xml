@@ -4,39 +4,55 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="New Game"
-        android:background="@drawable/level_border"
+        android:onClick="newgame"
+        style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/level_border"
         android:layout_gravity="center"
         android:text="Resume"
+        style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="LeaderBoard"
+        style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Help"
+        style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Exit"
+        style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
 </LinearLayout>

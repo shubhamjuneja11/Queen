@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.junejaspc.queen.ChessBoard">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@drawable/time_bg"
+        android:text="12:30:00"
+        android:id="@+id/mytime"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="20dp"
+         />
 <GridLayout
     android:layout_width="368dp"
     android:layout_height="495dp"
     android:rowCount="8"
+    android:layout_marginTop="10dp"
     android:id="@+id/grid"
     android:columnCount="8"
     >
@@ -24,4 +37,4 @@
         tools:layout_editor_absoluteY="445dp"
         tools:layout_editor_absoluteX="32dp">
     </com.google.android.gms.ads.AdView>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
