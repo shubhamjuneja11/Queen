@@ -44,11 +44,11 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#6A3410"
+        android:background="#f98202"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/level_inner_recycler"></include>
 
-
     </android.support.v4.widget.NestedScrollView>
+
 </android.support.design.widget.CoordinatorLayout>

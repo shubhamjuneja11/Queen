@@ -12,6 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +55,7 @@ LevelAdapter adapter;
         adapter=new LevelAdapter(this,levels);
         recyclerView.setAdapter(adapter);
         preparedata();
+
     }
     public void preparedata(){
         levels.add(new LevelClass(1,"Level 1","4x4"));

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -15,6 +16,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
+import static java.security.AccessController.getContext;
 
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener {
 GridLayout gridLayout;
@@ -49,6 +56,15 @@ GridLayout gridLayout;
 
         buttons_state=new boolean[rowlimit][rowlimit];
         decideFactor();
+        MobileAds.initialize(getApplicationContext(),"ca-app-pub-5750055305709604~2904023779");
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        //AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest request =
+                new AdRequest.Builder()
+                .addTestDevice(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
+                        .build();
+
+        mAdView.loadAd(request);
     }
     public void decideFactor(){
         totalbuttons=rowlimit*rowlimit;
