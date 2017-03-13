@@ -16,4 +16,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=new Intent(this,LevelActivity.class);
         startActivity(intent);
     }
+   public void openboard(View view){
+       Intent intent=new Intent(this,LeaderBoardActivity.class);
+       startActivity(intent);
+   }
 }
