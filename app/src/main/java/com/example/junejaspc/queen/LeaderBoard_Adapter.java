@@ -26,8 +26,13 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-            LeaderBoard_row row=al.get(position);
+        try {
+            LeaderBoard_row row = al.get(position);
             holder.username.setText(row.getUsername());
+            holder.level.setText(row.getLevel());
+            holder.time.setText(row.getTime());
+        }
+        catch (Exception e){e.printStackTrace();}
     }
 
     @Override
@@ -36,11 +41,13 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView username;
+        TextView username,level,time;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             username=(TextView)itemView.findViewById(R.id.username);
+            level=(TextView)itemView.findViewById(R.id.level);
+            time=(TextView)itemView.findViewById(R.id.time);
         }
     }
 }
