@@ -12,19 +12,17 @@
     <TextView
         android:layout_width="50dp"
         android:gravity="center"
-        android:id="@+id/level"
-        android:textColor="@color/white"
-        android:text="2"
-        android:background="@drawable/circle"
+        android:id="@+id/mylevel"
+        android:text="a"
+        android:textColor="@color/black"
         android:layout_height="50dp" />
 <TextView
     android:layout_width="80dp"
     android:layout_height="80dp"
-    android:id="@+id/time"
-    android:text="12:00:43.56"
+    android:id="@+id/mytime"
+    android:text="a"
     android:gravity="center"
-    android:textColor="@color/white"
-    android:background="@drawable/circle"
+    android:textColor="@color/black"
     />
     <TextView
         android:layout_width="0dp"

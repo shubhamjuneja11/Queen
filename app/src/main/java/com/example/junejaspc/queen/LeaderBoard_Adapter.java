@@ -1,6 +1,7 @@
 package com.example.junejaspc.queen;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,12 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
         try {
             LeaderBoard_row row = al.get(position);
             holder.username.setText(row.getUsername());
-            holder.level.setText(row.getLevel());
+            holder.level.setText(String.valueOf(row.getLevel()));
             holder.time.setText(row.getTime());
         }
-        catch (Exception e){e.printStackTrace();}
+        catch (Exception e){
+            Log.e("zila",e.getMessage());
+            e.printStackTrace();}
     }
 
     @Override
@@ -46,8 +49,9 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
         public MyViewHolder(View itemView) {
             super(itemView);
             username=(TextView)itemView.findViewById(R.id.username);
-            level=(TextView)itemView.findViewById(R.id.level);
-            time=(TextView)itemView.findViewById(R.id.time);
+            level=(TextView)itemView.findViewById(R.id.mylevel);
+            time=(TextView)itemView.findViewById(R.id.mytime);
+
         }
     }
 }

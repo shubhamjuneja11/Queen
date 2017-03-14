@@ -78,16 +78,17 @@ ArrayList<LeaderBoard_row>al;
             JSONArray array=jsonObject.getJSONArray(arrayname);
             //JSONObject jsonObject1=jsonObject.getJSONObject(arrayname);
             Log.e("netz","12");
-            JSONObject jsonObject1=array.getJSONObject(0);
-           // for(int i=0;i<jsonObject1.length();i++){Log.e("netz","13");
+            for(int i=0;i<array.length();i++){Log.e("netz","13");
+                JSONObject jsonObject1=array.getJSONObject(i);
                 String user=jsonObject1.getString(username);
                 int level=jsonObject1.getInt(MyLoader.level);
                 String time=jsonObject1.getString(MyLoader.time);
+                Log.e("buzz",user); Log.e("buzz",level+""); Log.e("buzz",time);
 
                 LeaderBoard_row score=new LeaderBoard_row(user,level,time);
                 al.add(score);
 
-           // }
+            }
         }
         catch(Exception e){
             Log.e("netz",response);
