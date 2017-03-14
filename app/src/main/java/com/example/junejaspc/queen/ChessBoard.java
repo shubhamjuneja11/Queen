@@ -1,13 +1,19 @@
 package com.example.junejaspc.queen;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -15,7 +21,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ChessBoard extends AppCompatActivity implements View.OnClickListener {
+import java.net.MalformedURLException;
+
+public class ChessBoard extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<LeaderBoard_row> {
     GridLayout gridLayout;
     ImageButton button_set[][];
     int i, height, width, totalbuttons, rowlimit, j, total_queens;
@@ -28,10 +36,11 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     GradientDrawable shapeDrawable, shape2, shape3;
     String colors[] = new String[]{"#7333BF", "#CB2A62", "#A8AD1F", "#D34B20", "#649035", "#359053",
             "#31B0AF", "#2C65A9", "#13EBE8", "#969734", "#ED04FC", "#FC0488", "#0480FC"};
-
+    private String user_name, mytime;
+    int mylevel;
     private final int REFRESH_RATE = 1;
     private String hours, minutes, seconds, milliseconds;
-    private long secs, mins, hrs, msecs;
+    private long secs, mins, hrs;
     private long elapsedTime, startTime;
     private Handler mHandler = new Handler();
 
@@ -198,9 +207,9 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
             stop_tick_tock(); //Toast.makeText(this, "Congrats", Toast.LENGTH_SHORT).show();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View view = getLayoutInflater().inflate(R.layout.congrats_dialog, null);
-            TextView tv1,tv2;
-            tv1=(TextView)view.findViewById(R.id.complete_time);
-            tv2=(TextView)findViewById(R.id.mytime);
+            TextView tv1, tv2;
+            tv1 = (TextView) view.findViewById(R.id.complete_time);
+            tv2 = (TextView) findViewById(R.id.mytime);
             tv1.setText(tv2.getText().toString());
             builder.setView(view);
             dialog = builder.create();
@@ -292,9 +301,79 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     }
 
     public void onleaderboard(View view) {
+        putonBoard();
         Intent intent = new Intent(this, LeaderBoardActivity.class);
         intent.putExtra("count", rowlimit);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog, null);
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    public void yessave(View view) {
+
+    }
+
+    public void nosave(View view) {
+        dialog.dismiss();
+        super.onBackPressed();
+    }
+
+    public void putonBoard() {
+        mytime = time.getText().toString();
+        user_name = "shubh";
+        mylevel = 1;
+        senddata();
+    }
+    public void senddata(){
+        ConnectivityManager connectivity=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo network=connectivity.getActiveNetworkInfo();
+        if(network!=null&&network.isConnected())
+        {
+            Log.e("netz",1+"");
+            LoaderManager loaderManager=getSupportLoaderManager();
+            loaderManager.initLoader(1,null,this).forceLoad();
+
+        }
+    }
+    public void senddata(View view){
+        ConnectivityManager connectivity=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo network=connectivity.getActiveNetworkInfo();
+        if(network!=null&&network.isConnected())
+        {
+            Log.e("netz",1+"");
+            LoaderManager loaderManager=getSupportLoaderManager();
+            loaderManager.initLoader(1,null,this).forceLoad();
+
+        }
+    }
+    @Override
+    public Loader<LeaderBoard_row> onCreateLoader(int id, Bundle args) {
+        try {
+            user_name="mmm";
+            mylevel=1;
+            mytime="2322";
+            return new LoaderForSubmit(this,new LeaderBoard_row(user_name,mylevel,mytime));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<LeaderBoard_row> loader, LeaderBoard_row data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<LeaderBoard_row> loader) {
+
     }
 }

@@ -51,7 +51,7 @@ ArrayList<LeaderBoard_row>al;
         }
         return al;
     }
-    private static String makerequest(URL url1) throws IOException {
+    public static String makerequest(URL url1) throws IOException {
         Log.e("netz","6");
         String jsonResponse="";
         InputStream inputstream=null;

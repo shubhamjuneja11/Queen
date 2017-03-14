@@ -11,12 +11,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:background="@drawable/time_bg"
-        android:text="12:30:00"
         android:id="@+id/mytime"
         android:textColor="@color/white"
         android:gravity="center"
         android:textSize="20dp"
          />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="click"
+        android:onClick="senddata"
+        />
 <GridLayout
     android:layout_width="368dp"
     android:layout_height="495dp"
@@ -26,6 +31,7 @@
     android:columnCount="8"
     >
 </GridLayout>
+
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"

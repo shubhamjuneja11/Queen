@@ -20,4 +20,14 @@ public class MainActivity extends AppCompatActivity {
        Intent intent=new Intent(this,LeaderBoardActivity.class);
        startActivity(intent);
    }
+   public void exit(View view){
+       onBackPressed();
+   }
+   public void openhelp(View view){
+       Intent intent=new Intent(this,HelpClass.class);
+       startActivity(intent);
+   }
+   public void resume(View view){
+
+   }
 }

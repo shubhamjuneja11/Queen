@@ -22,6 +22,7 @@
         android:background="@drawable/level_border"
         android:layout_gravity="center"
         android:text="Resume"
+        android:onClick="resume"
         style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
@@ -43,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Help"
+        android:onClick="openhelp"
         style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
@@ -53,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Exit"
+        android:onClick="exit"
         style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
