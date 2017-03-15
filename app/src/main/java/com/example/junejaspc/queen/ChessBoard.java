@@ -2,12 +2,14 @@ package com.example.junejaspc.queen;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
@@ -33,22 +35,26 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     boolean buttons_state[][];
     Runnable startTimer;
     AlertDialog dialog;
+    boolean saved;
     GradientDrawable shapeDrawable, shape2, shape3;
     String colors[] = new String[]{"#7333BF", "#CB2A62", "#A8AD1F", "#D34B20", "#649035", "#359053",
             "#31B0AF", "#2C65A9", "#13EBE8", "#969734", "#ED04FC", "#FC0488", "#0480FC"};
-    private String user_name, mytime;
+    private String user_name, mytime,savedgame;
     int mylevel;
     private final int REFRESH_RATE = 1;
     private String hours, minutes, seconds, milliseconds;
     private long secs, mins, hrs;
     private long elapsedTime, startTime;
     private Handler mHandler = new Handler();
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
+        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         rowlimit = getIntent().getIntExtra("count", 4);
+        saved=getIntent().getBooleanExtra("saved",false);
         time = (TextView) findViewById(R.id.mytime);
         shapeDrawable = new GradientDrawable();
         shapeDrawable.setStroke(1, getResources().getColor(R.color.black));
@@ -108,34 +114,104 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
             if (rowlimit % 2 == 0)
                 decide = !decide;
         }
+        if(saved)
+        checksavedgame();
     }
+public void checksavedgame(){
+        savedgame=sharedPreferences.getString(colors[rowlimit-4],"1");
+    Log.e("rollz",savedgame+"");
+       if(!savedgame.equals("1"))
+           resumegame();
+}
+public void resumegame(){
+    Log.e("rollz","s");
+    try {
+        int k = 0;
+        char c[] = savedgame.toCharArray();
+        for (int a = 0; a < rowlimit; a++) {
+            for (int b = 0; b < rowlimit; b++) {
+                if (c[k++] == '1') {
+                    buttons_state[a][b] = true;
+                    resumeonClick(button_set[a][b]);
+                }
+                else buttons_state[a][b] = false;
 
+            }
+        }
+        total_queens=sharedPreferences.getInt(colors[rowlimit-4]+"queen",0);
+    }
+    catch (Exception e){
+        Log.e("rolz","rockandroll");
+    }
+}
     @Override
     public void onClick(View v) {
-
         for (i = 0; i < rowlimit; i++)
             for (j = 0; j < rowlimit; j++)
-                if (button_set[i][j] == v) {
-                    if (buttons_state[i][j]) {
-                        if (i % 2 == 0 && j % 2 == 0 || i % 2 != 0 && j % 2 != 0)
-                            v.setBackgroundDrawable(shapeDrawable);
-                        else v.setBackgroundDrawable(shape2);
-                        ((ImageButton) v).setImageResource(0);
-                        total_queens--;
-                        buttons_state[i][j] = !buttons_state[i][j];
-                        check_status(i, j);
-                    } else {
+                if (button_set[i][j] == v) {        Log.e("rollz","o");
 
-                        if (total_queens < rowlimit) {
-                            total_queens++;
-                            ((ImageButton) v).setImageResource(R.drawable.queen);
-                            buttons_state[i][j] = !buttons_state[i][j];
-                            check_status(i, j);
-                            if (total_queens == rowlimit)
-                                check_completed();
-                        }
-                    }
+                    decideButtonStatus(i,j,v);
                 }
+    }
+    public void resumeonClick(View v){
+        for (i = 0; i < rowlimit; i++)
+            for (j = 0; j < rowlimit; j++)
+                if (button_set[i][j] == v) {        Log.e("rollz","o");
+
+                    resumedecidebuttonstatus(i,j,v);
+                }
+    }
+    public void resumedecidebuttonstatus(int i,int j,View v){
+        if (!buttons_state[i][j]) {        Log.e("rollz","pppo");
+
+            if (i % 2 == 0 && j % 2 == 0 || i % 2 != 0 && j % 2 != 0)
+            { v.setBackgroundDrawable(shapeDrawable);        Log.e("rollz","ola");
+            }
+            else {v.setBackgroundDrawable(shape2);        Log.e("rollz","aaao");
+            }
+            ((ImageButton) v).setImageResource(0);
+            total_queens--;
+            //buttons_state[i][j] = !buttons_state[i][j];
+            check_status(i, j);
+        } else {
+            Log.e("rollz","aao");
+
+
+            if (total_queens < rowlimit) {Log.e("rollz","mataao");
+                total_queens++;
+                ((ImageButton) v).setImageResource(R.drawable.queen);
+               // buttons_state[i][j] = !buttons_state[i][j];
+                check_status(i, j);
+                if (total_queens == rowlimit)
+                    check_completed();
+            }
+        }
+    }
+    public void decideButtonStatus(int i,int j,View v){
+        if (buttons_state[i][j]) {        Log.e("rollz","pppo");
+
+            if (i % 2 == 0 && j % 2 == 0 || i % 2 != 0 && j % 2 != 0)
+            { v.setBackgroundDrawable(shapeDrawable);        Log.e("rollz","ola");
+            }
+            else {v.setBackgroundDrawable(shape2);        Log.e("rollz","aaao");
+            }
+            ((ImageButton) v).setImageResource(0);
+            total_queens--;
+            buttons_state[i][j] = !buttons_state[i][j];
+            check_status(i, j);
+        } else {
+            Log.e("rollz","aao");
+
+
+            if (total_queens < rowlimit) {Log.e("rollz","mataao");
+                total_queens++;
+                ((ImageButton) v).setImageResource(R.drawable.queen);
+                buttons_state[i][j] = !buttons_state[i][j];
+                check_status(i, j);
+                if (total_queens == rowlimit)
+                    check_completed();
+            }
+        }
     }
 
     public void check_status(int m, int n) {
@@ -230,6 +306,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
             };
             startTimer.run();
         } catch (Exception e) {
+            Log.e("rolz","rockandroll");
             e.printStackTrace();
         }
     }
@@ -318,7 +395,23 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     }
 
     public void yessave(View view) {
-
+        dialog.dismiss();
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        int y,z;
+        String s="";
+        for(y=0;y<rowlimit;y++){
+            for(z=0;z<rowlimit;z++){
+                if(buttons_state[y][z])s+='1';
+                else s+='0';
+            }
+        }
+        LevelActivity.decide[rowlimit-3]=true;
+        editor.putString(colors[rowlimit-4],s);
+        editor.putInt(colors[rowlimit-4]+"queen",total_queens);
+        Log.e("rollz",s);
+        editor.putBoolean(String.valueOf(rowlimit-3),true);
+        editor.apply();
+        super.onBackPressed();
     }
 
     public void nosave(View view) {
@@ -348,7 +441,6 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         NetworkInfo network=connectivity.getActiveNetworkInfo();
         if(network!=null&&network.isConnected())
         {
-            Log.e("netz",1+"");
             LoaderManager loaderManager=getSupportLoaderManager();
             loaderManager.initLoader(1,null,this).forceLoad();
 
@@ -362,6 +454,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
             mytime="2322";
             return new LoaderForSubmit(this,new LeaderBoard_row(user_name,mylevel,mytime));
         } catch (MalformedURLException e) {
+            Log.e("rolz","rockandroll");
             e.printStackTrace();
             return null;
         }

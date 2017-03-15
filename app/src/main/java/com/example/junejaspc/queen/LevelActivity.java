@@ -5,6 +5,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -26,7 +27,11 @@ LevelAdapter adapter;
     RecyclerView recyclerView;
     List<LevelClass>levels;
     String lev[];
+    int a=4;
+    Intent intent;
+    AlertDialog dialog;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    public static  Boolean decide[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,17 +83,43 @@ LevelAdapter adapter;
 
     @Override
     public void onClick(View v) {
-        int a=1;
+
         String mylevel=((TextView)v.findViewById(R.id.levelcount)).getText().toString();
         for(int i=0;i<lev.length;i++){
             if(mylevel.equals(lev[i]))
             {a=i+4;break;}
         }
-        Intent intent=new Intent(LevelActivity.this,ChessBoard.class);
+
+        if(decide[a-3])
+        {
+            AlertDialog.Builder builder=new AlertDialog.Builder(this);
+            View view = getLayoutInflater().inflate(R.layout.yesnodialog, null);
+            builder.setView(view);
+             dialog = builder.create();
+            dialog.show();
+
+        }
+        else{
+            intent=new Intent(LevelActivity.this,ChessBoard.class);
+            intent.putExtra("count",a);
+            startActivity(intent);
+        }
+
+    }
+    public void yesresume(View view){
+        dialog.dismiss();
+         intent=new Intent(LevelActivity.this,ChessBoard.class);
         intent.putExtra("count",a);
+        intent.putExtra("saved",true);
         startActivity(intent);
     }
+    public void noresume(View view){
+        dialog.dismiss();
+        intent=new Intent(LevelActivity.this,ChessBoard.class);
+        intent.putExtra("count",a);
+        startActivity(intent);
 
+    }
     @Override
     public void onBackPressed() {
 
