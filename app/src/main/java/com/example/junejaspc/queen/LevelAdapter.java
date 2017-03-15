@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,13 +53,18 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
     holder.level.setText(levelClass.getCount());
         holder.name.setText(levelClass.getLevelno());
         try {
-            int level = Integer.valueOf(levelClass.getLevelno());
+            String numberOnly= levelClass.getLevelno().replaceAll("[^0-9]", "");
+            int level = Integer.valueOf(numberOnly);
             if(decide[level]){
+                Log.e("boom","kat");
                 holder.save.setAlpha(0.2f);
             }
-            else holder.save.setAlpha(1.0f);
+            else {holder.save.setAlpha(1.0f);
+                Log.e("boom","amit");
+            }
         }
-        catch (Exception e){}
+        catch (Exception e){Log.e("boom",e.getMessage());
+        }
     }
 
     @Override
