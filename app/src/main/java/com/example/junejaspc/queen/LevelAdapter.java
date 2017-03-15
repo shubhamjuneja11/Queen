@@ -20,7 +20,6 @@ import static com.example.junejaspc.queen.LevelActivity.decide;
  */
 
 public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> {
-    public TextView name,size;
     LevelActivity levelClass;
     List<LevelClass> levels;
     SharedPreferences sharedPreferences;
@@ -56,14 +55,15 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
             String numberOnly= levelClass.getLevelno().replaceAll("[^0-9]", "");
             int level = Integer.valueOf(numberOnly);
             if(decide[level]){
-                Log.e("boom","kat");
-                holder.save.setAlpha(0.2f);
+                holder.save.setAlpha(0.1f);
+                holder.done.setAlpha(0.1f);
             }
-            else {holder.save.setAlpha(1.0f);
-                Log.e("boom","amit");
+            else {
+                holder.save.setAlpha(1.0f);
+                holder.done.setAlpha(1.0f);
             }
         }
-        catch (Exception e){Log.e("boom",e.getMessage());
+        catch (Exception e){
         }
     }
 
@@ -74,13 +74,13 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name,level;
-        ImageView save;
+        ImageView save,done;
         public ViewHolder(View itemView) {
             super(itemView);
             name=(TextView)itemView.findViewById(R.id.levelname);
             level=(TextView)itemView.findViewById(R.id.levelcount);
             save=(ImageView)itemView.findViewById(R.id.saveicon);
-
+            done=(ImageView)itemView.findViewById(R.id.done);
         }
     }
 }
