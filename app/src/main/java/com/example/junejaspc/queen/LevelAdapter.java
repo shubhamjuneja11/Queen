@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import static com.example.junejaspc.queen.LevelActivity.completed;
 import static com.example.junejaspc.queen.LevelActivity.decide;
 
 /**
@@ -56,12 +57,15 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
             int level = Integer.valueOf(numberOnly);
             if(decide[level]){
                 holder.save.setAlpha(0.1f);
-                holder.done.setAlpha(0.1f);
+
             }
             else {
                 holder.save.setAlpha(1.0f);
-                holder.done.setAlpha(1.0f);
+
             }
+            if(completed[level])
+                holder.done.setAlpha(0.1f);
+            else holder.done.setAlpha(1.0f);
         }
         catch (Exception e){
         }

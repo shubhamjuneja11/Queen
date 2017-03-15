@@ -22,7 +22,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import java.net.MalformedURLException;
 
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<LeaderBoard_row> {
@@ -37,24 +36,31 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     AlertDialog dialog;
     boolean saved;
     GradientDrawable shapeDrawable, shape2, shape3;
-    String colors[] = new String[]{"#7333BF", "#CB2A62", "#A8AD1F", "#D34B20", "#649035", "#359053",
+    public static String colors[] = new String[]{"#7333BF", "#CB2A62", "#A8AD1F", "#D34B20", "#649035", "#359053",
             "#31B0AF", "#2C65A9", "#13EBE8", "#969734", "#ED04FC", "#FC0488", "#0480FC"};
     private String user_name, mytime,savedgame;
     int mylevel;
-    private final int REFRESH_RATE = 1;
+    private final int REFRESH_RATE = 100;
     private String hours, minutes, seconds, milliseconds;
     private long secs, mins, hrs;
     private long elapsedTime, startTime;
     private Handler mHandler = new Handler();
     SharedPreferences sharedPreferences;
+    public static String savecompleted="complete";
+    public static String savemilli="milli";
+    private long savedtime;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        editor =sharedPreferences.edit();
         rowlimit = getIntent().getIntExtra("count", 4);
         saved=getIntent().getBooleanExtra("saved",false);
+        savedtime=sharedPreferences.getLong(colors[rowlimit-4]+savemilli,0);
+        Log.e("bolb",savedtime+"");
         time = (TextView) findViewById(R.id.mytime);
         shapeDrawable = new GradientDrawable();
         shapeDrawable.setStroke(1, getResources().getColor(R.color.black));
@@ -135,7 +141,6 @@ public void resumegame(){
                     resumeonClick(button_set[a][b]);
                 }
                 else buttons_state[a][b] = false;
-
             }
         }
         total_queens=sharedPreferences.getInt(colors[rowlimit-4]+"queen",0);
@@ -148,7 +153,7 @@ public void resumegame(){
     public void onClick(View v) {
         for (i = 0; i < rowlimit; i++)
             for (j = 0; j < rowlimit; j++)
-                if (button_set[i][j] == v) {        Log.e("rollz","o");
+                if (button_set[i][j] == v) {
 
                     decideButtonStatus(i,j,v);
                 }
@@ -156,18 +161,18 @@ public void resumegame(){
     public void resumeonClick(View v){
         for (i = 0; i < rowlimit; i++)
             for (j = 0; j < rowlimit; j++)
-                if (button_set[i][j] == v) {        Log.e("rollz","o");
+                if (button_set[i][j] == v) {
 
                     resumedecidebuttonstatus(i,j,v);
                 }
     }
     public void resumedecidebuttonstatus(int i,int j,View v){
-        if (!buttons_state[i][j]) {        Log.e("rollz","pppo");
+        if (!buttons_state[i][j]) {
 
             if (i % 2 == 0 && j % 2 == 0 || i % 2 != 0 && j % 2 != 0)
-            { v.setBackgroundDrawable(shapeDrawable);        Log.e("rollz","ola");
+            { v.setBackgroundDrawable(shapeDrawable);
             }
-            else {v.setBackgroundDrawable(shape2);        Log.e("rollz","aaao");
+            else {v.setBackgroundDrawable(shape2);
             }
             ((ImageButton) v).setImageResource(0);
             total_queens--;
@@ -280,7 +285,9 @@ public void resumegame(){
                         break outerloop;
                     }
         if (flag) {
-            stop_tick_tock(); //Toast.makeText(this, "Congrats", Toast.LENGTH_SHORT).show();
+            stop_tick_tock();
+            editor.putBoolean(colors[rowlimit-4]+savecompleted,true);
+            editor.apply();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View view = getLayoutInflater().inflate(R.layout.congrats_dialog, null);
             TextView tv1, tv2;
@@ -299,7 +306,7 @@ public void resumegame(){
             startTime = System.currentTimeMillis();
             startTimer = new Runnable() {
                 public void run() {
-                    elapsedTime = System.currentTimeMillis() - startTime;
+                    elapsedTime = System.currentTimeMillis() - startTime+savedtime;
                     updateTimer(elapsedTime);
                     mHandler.postDelayed(this, REFRESH_RATE);
                 }
@@ -387,16 +394,18 @@ public void resumegame(){
 
     @Override
     public void onBackPressed() {
+        stop_tick_tock();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog, null);
         builder.setView(view);
         dialog = builder.create();
+        dialog.setCancelable(false);
         dialog.show();
     }
 
     public void yessave(View view) {
         dialog.dismiss();
-        SharedPreferences.Editor editor=sharedPreferences.edit();
+
         int y,z;
         String s="";
         for(y=0;y<rowlimit;y++){
@@ -408,8 +417,8 @@ public void resumegame(){
         LevelActivity.decide[rowlimit-3]=true;
         editor.putString(colors[rowlimit-4],s);
         editor.putInt(colors[rowlimit-4]+"queen",total_queens);
-        Log.e("rollz",s);
         editor.putBoolean(String.valueOf(rowlimit-3),true);
+        editor.putLong(colors[rowlimit-4]+savemilli,elapsedTime);
         editor.apply();
         super.onBackPressed();
     }

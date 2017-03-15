@@ -1,6 +1,8 @@
 package com.example.junejaspc.queen;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
@@ -12,6 +14,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -31,7 +34,30 @@ LevelAdapter adapter;
     Intent intent;
     AlertDialog dialog;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    public static  Boolean decide[];
+    SharedPreferences sharedPreferences;
+    public static  Boolean decide[],completed[];
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean a,b;
+        LevelActivity.decide=new Boolean[14];
+        completed=new Boolean[14];
+        if(sharedPreferences==null)
+            sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        for(int i=1;i<=13;i++){
+            a=sharedPreferences.getBoolean(String.valueOf(i),false);
+
+            if(!a)
+                LevelActivity.decide[i]=true;
+            else LevelActivity.decide[i]=false;
+
+            b=sharedPreferences.getBoolean(ChessBoard.colors[i-1]+ChessBoard.savecompleted,false);
+            if(!b)
+                completed[i]=true;
+            else completed[i]=false;
+        }
+        if(adapter!=null)adapter.notifyDataSetChanged();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,14 +116,14 @@ LevelAdapter adapter;
             {a=i+4;break;}
         }
 
-        if(decide[a-3])
+        if(!decide[a-3])
         {
+
             AlertDialog.Builder builder=new AlertDialog.Builder(this);
             View view = getLayoutInflater().inflate(R.layout.yesnodialog, null);
             builder.setView(view);
              dialog = builder.create();
             dialog.show();
-
         }
         else{
             intent=new Intent(LevelActivity.this,ChessBoard.class);
