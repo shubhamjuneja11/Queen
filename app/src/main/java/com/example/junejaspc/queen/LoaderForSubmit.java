@@ -78,7 +78,7 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
         }
         return null;
     }
-    private static String readfromstream(InputStream inputstream) throws IOException {
+    public static String readfromstream(InputStream inputstream) throws IOException {
         Log.e("netz","7");
         StringBuilder string=new StringBuilder();
         if(inputstream!=null) {

@@ -63,9 +63,7 @@ public void load_data(){
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
     }
-
     @Override
     public Loader<ArrayList<LeaderBoard_row>> onCreateLoader(int id, Bundle args) {
         Log.e("netz",2+"");
@@ -75,10 +73,7 @@ public void load_data(){
 
     @Override
     public void onLoadFinished(Loader<ArrayList<LeaderBoard_row>> loader, ArrayList<LeaderBoard_row> data) {
-        /*al=data;
-        if(al==null)
-            Log.e("netz","nazi");
-        else Log.e("netz","nazinot");*/
+
         Collections.sort(al, new Comparator<LeaderBoard_row>() {
             @Override
             public int compare(LeaderBoard_row o1, LeaderBoard_row o2) {

@@ -28,7 +28,6 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".LeaderBoardActivity" />
         <activity android:name=".HelpClass" />
-        <activity android:name=".FirstScreen"></activity>
     </application>
 
 </manifest>

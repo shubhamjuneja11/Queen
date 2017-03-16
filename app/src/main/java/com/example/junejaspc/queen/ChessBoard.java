@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -19,13 +21,30 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
+
+import static com.example.junejaspc.queen.LoaderForSubmit.readfromstream;
 
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<LeaderBoard_row> {
     GridLayout gridLayout;
@@ -37,13 +56,14 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     DisplayMetrics displayMetrics;
     boolean buttons_state[][];
     Runnable startTimer;
-    AlertDialog dialog;
+    AlertDialog dialog,dialog1;
     boolean saved;
+    View view2;
     GradientDrawable shapeDrawable, shape2, shape3;
     public static String colors[] = new String[]{"#7333BF", "#CB2A62", "#A8AD1F", "#D34B20", "#649035", "#359053",
             "#31B0AF", "#2C65A9", "#13EBE8", "#969734", "#ED04FC", "#FC0488", "#0480FC"};
     private String user_name, mytime,savedgame;
-    int mylevel;
+    int mylevel,avatar=0;
     private final int REFRESH_RATE = 100;
     private String hours, minutes, seconds, milliseconds;
     private long secs, mins, hrs;
@@ -51,10 +71,11 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     private Handler mHandler = new Handler();
     SharedPreferences sharedPreferences;
     public static String savecompleted="complete";
-    public static String savemilli="milli";
+    public static String savemilli="milli",auth_user_name,response;
     private long savedtime;
     SharedPreferences.Editor editor;
-
+    private String url="http://geekyboy.16mb.com/saveusername.php";
+    private URL myurl;
     @Override
     protected void onPause() {
         super.onPause();
@@ -97,6 +118,12 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         editor =sharedPreferences.edit();
         game_started=true;
+
+        try {
+            myurl=new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
         rowlimit = getIntent().getIntExtra("count", 4);
         //savedtime=0;
@@ -451,11 +478,14 @@ public void resumegame(){
     }
 
     public void onleaderboard(View view) {
-        putonBoard();
-        Intent intent = new Intent(this, LeaderBoardActivity.class);
+        //putonBoard();
+       /* Intent intent = new Intent(this, LeaderBoardActivity.class);
         intent.putExtra("count", rowlimit);
+        intent.putExtra("submit",true);
         startActivity(intent);
-        finish();
+        finish();*/
+       dialog.dismiss();
+       check_user();
     }
 public void back(View view){
    goback();
@@ -537,9 +567,10 @@ public void goback(){
         NetworkInfo network=connectivity.getActiveNetworkInfo();
         if(network!=null&&network.isConnected())
         {
-            Log.e("netz",1+"");
+            if(check_user()){
             LoaderManager loaderManager=getSupportLoaderManager();
             loaderManager.initLoader(1,null,this).forceLoad();
+            }
 
         }
     }
@@ -553,14 +584,60 @@ public void goback(){
 
         }
     }
+    public boolean check_user(){
+        String username=sharedPreferences.getString("username","user");
+        if(!username.equals("user"))
+            return true;
+        else{
+            if(createusername())
+                if(createavatar())
+                    return true;
+
+        }
+        return false;
+    }
+    public boolean createusername(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        view2=getLayoutInflater().inflate(R.layout.usernamedialog,null);
+        builder.setView(view2);
+         dialog1=builder.create();
+        dialog1.show();
+        return true;
+    }
+    public void submit(View view){
+        try {
+            Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
+            EditText user = (EditText) view2.findViewById(R.id.username);
+            auth_user_name = user.getText().toString();
+            ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo network = connectivity.getActiveNetworkInfo();
+            if (network != null && network.isConnected()) {
+                new MyAsyncClass().execute();
+                dialog1.dismiss();
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            Log.e("bvp",e.getMessage());
+            Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();}
+    }
+    public boolean createavatar(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        View view=getLayoutInflater().inflate(R.layout.avatardialog,null);
+        builder.setView(view);
+        AlertDialog dialog=builder.create();
+        dialog.show();
+        return true;
+    }
     @Override
     public Loader<LeaderBoard_row> onCreateLoader(int id, Bundle args) {
-        try {
+        try { Toast.makeText(this, "3", Toast.LENGTH_SHORT).show();
             user_name=sharedPreferences.getString("username","user");
             mylevel=rowlimit-3;
             mytime=String.valueOf(elapsedTime);
             return new LoaderForSubmit(this,new LeaderBoard_row(user_name,mylevel,mytime));
         } catch (MalformedURLException e) {
+            Toast.makeText(this, "4", Toast.LENGTH_SHORT).show();
             Log.e("rolz","rockandroll");
             e.printStackTrace();
             return null;
@@ -575,5 +652,67 @@ public void goback(){
     @Override
     public void onLoaderReset(Loader<LeaderBoard_row> loader) {
 
+    }
+
+
+    private class MyAsyncClass extends AsyncTask<Void,Void,Boolean>{
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            connect(myurl);
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
+    }
+    public void connect(URL url){
+    try{
+        InputStream inputstream=null;
+        HttpURLConnection connection=null;
+        connection=(HttpURLConnection)url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setReadTimeout(10000);
+        connection.setReadTimeout(15000);
+        connection.setDoInput(true);
+        connection.setDoOutput(true);
+
+        Uri.Builder builder = new Uri.Builder()
+                .appendQueryParameter("username",auth_user_name)
+                .appendQueryParameter("avatar",String.valueOf(avatar));
+
+        String query = builder.build().getEncodedQuery();
+
+        OutputStream os = connection.getOutputStream();
+        BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(os, "UTF-8"));
+        writer.write(query);
+        writer.flush();
+        writer.close();
+        os.close();
+
+        connection.connect();
+
+        inputstream=connection.getInputStream();
+        response=readfromstream(inputstream);
+        Log.e("netz",response);
+        checkresponse();
+    } catch (IOException e) {
+        Log.e("bvp",e.getMessage());
+        e.printStackTrace();
+    }
+    }
+    public void checkresponse(){
+        try {Log.e("response",response);
+            JSONObject object=new JSONObject(response);
+            int m=object.getInt("success");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("bvp",e.getMessage());
+        }
     }
 }
