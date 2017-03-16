@@ -19,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class LeaderBoardActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<LeaderBoard_row>>{
     private String url="http://geekyboy.16mb.com/leaderboard.php";
@@ -26,7 +28,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     LeaderBoard_Adapter adapter;
     ArrayList<LeaderBoard_row> al;
     ProgressBar progressBar;
-
+    long a,b;
     @Override
     protected void onResume() {
         super.onResume();
@@ -77,6 +79,15 @@ public void load_data(){
         if(al==null)
             Log.e("netz","nazi");
         else Log.e("netz","nazinot");*/
+        Collections.sort(al, new Comparator<LeaderBoard_row>() {
+            @Override
+            public int compare(LeaderBoard_row o1, LeaderBoard_row o2) {
+                a=Long.valueOf(o1.getTime());
+                b=Long.valueOf(o2.getTime());
+                if(a<b)return -1;
+                else return 1;
+            }
+        });
         adapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
         Log.e("netz",3+"");

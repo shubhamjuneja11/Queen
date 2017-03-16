@@ -53,14 +53,14 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:src="@drawable/watch"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:layout_gravity="center"
         />
 
     <TextView
         android:id="@+id/mytime"
         android:layout_width="0dp"
-        android:layout_weight="8"
+        android:layout_weight="9"
         android:layout_height="80dp"
         android:gravity="center"
         android:text="a"

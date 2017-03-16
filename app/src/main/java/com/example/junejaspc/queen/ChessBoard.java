@@ -47,7 +47,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     private final int REFRESH_RATE = 100;
     private String hours, minutes, seconds, milliseconds;
     private long secs, mins, hrs;
-    private long elapsedTime, startTime,pausetime;
+    private long elapsedTime, startTime;
     private Handler mHandler = new Handler();
     SharedPreferences sharedPreferences;
     public static String savecompleted="complete";
@@ -556,9 +556,9 @@ public void goback(){
     @Override
     public Loader<LeaderBoard_row> onCreateLoader(int id, Bundle args) {
         try {
-            user_name="mmm";
-            mylevel=1;
-            mytime="2322";
+            user_name=sharedPreferences.getString("username","user");
+            mylevel=rowlimit-3;
+            mytime=String.valueOf(elapsedTime);
             return new LoaderForSubmit(this,new LeaderBoard_row(user_name,mylevel,mytime));
         } catch (MalformedURLException e) {
             Log.e("rolz","rockandroll");
