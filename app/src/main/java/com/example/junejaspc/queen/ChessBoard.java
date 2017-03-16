@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,7 @@ import java.net.MalformedURLException;
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<LeaderBoard_row> {
     GridLayout gridLayout;
     ImageButton button_set[][];
+    AlertDialog.Builder builder;
     int i, height, width, totalbuttons, rowlimit, j, total_queens;
     boolean decide,game_started;
     TextView time;
@@ -44,7 +47,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     private final int REFRESH_RATE = 100;
     private String hours, minutes, seconds, milliseconds;
     private long secs, mins, hrs;
-    private long elapsedTime, startTime;
+    private long elapsedTime, startTime,pausetime;
     private Handler mHandler = new Handler();
     SharedPreferences sharedPreferences;
     public static String savecompleted="complete";
@@ -53,21 +56,37 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     SharedPreferences.Editor editor;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        stop_tick_tock();
+        editor.putLong("temptime",elapsedTime);
+        editor.apply();
+        Log.e("zoya",elapsedTime+"");
+        //game_started=false;
+    }
+
+    @Override
     protected void onResume() {
-        try {
+        try {Log.e("popi","richard");
             super.onResume();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            View view = getLayoutInflater().inflate(R.layout.newdialog, null);
-            builder.setView(view);
-            dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.show();
+            if(game_started) {
+                builder = new AlertDialog.Builder(this);
+                Log.e("popi", "resume");
+                View view = getLayoutInflater().inflate(R.layout.newdialog, null);
+                builder.setView(view);
+                dialog = builder.create();
+                dialog.setCancelable(false);
+                dialog.show();
+                savedtime=sharedPreferences.getLong("temptime",0);
+                Log.e("zoya",savedtime+"");
+            }
+
+
         }
-        catch (Exception e){}
+        catch (Exception e){Log.e("popi","chandler");}
     }
     public void startgame(View view){
         dialog.dismiss();
-        boardsetup();
         tick_tock();
         game_started=true;
     }
@@ -75,14 +94,15 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
-        game_started=false;
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         editor =sharedPreferences.edit();
+        game_started=true;
+
         rowlimit = getIntent().getIntExtra("count", 4);
-        saved=getIntent().getBooleanExtra("saved",false);
-        savedtime=sharedPreferences.getLong(colors[rowlimit-4]+savemilli,0);
-        if(!saved)savedtime=0;
-        Log.e("bolb",savedtime+"");
+        //savedtime=0;
+            saved = getIntent().getBooleanExtra("saved", false);
+        if(saved)
+            savedtime = sharedPreferences.getLong(colors[rowlimit - 4] + savemilli, 0);
         time = (TextView) findViewById(R.id.mytime);
         shapeDrawable = new GradientDrawable();
         shapeDrawable.setStroke(1, getResources().getColor(R.color.black));
@@ -100,7 +120,8 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         total_queens = 0;
         buttons_state = new boolean[rowlimit][rowlimit];
         decideFactor();
-
+        boardsetup();
+        Log.e("popi","createdone");
         /*MobileAds.initialize(getApplicationContext(),"ca-app-pub-5750055305709604~2904023779");
         AdView mAdView = (AdView) findViewById(R.id.adView);
         //AdRequest adRequest = new AdRequest.Builder().build();
@@ -295,16 +316,29 @@ public void resumegame(){
     }
 
     public boolean check_completed() {
+        String s="";
+        for(i=0;i<rowlimit;i++)
+            for(j=0;j<rowlimit;j++)
+                if(buttons_state[i][j])s+="1";
+                else s+="0";
+        Log.e("bushi",s);
         boolean flag = true;
         int i, j;
+        Log.e("bam",rowlimit+"");
         outerloop:
-        for (i = 0; i < rowlimit; i++)
-            for (j = 0; j < rowlimit; j++)
+        for (i = 0; i < rowlimit; i++) {
+            for (j = 0; j < rowlimit; j++) {
                 if (buttons_state[i][j])
                     if (!mark_status(i, j)) {
-                        flag = false;
-                        break outerloop;
+                        Log.e("bam", "raaz");
+                        return false;
+                        /*flag = false;
+                        break outerloop;*/
+                    } else {
+                        Log.e("bam", "bhole");
                     }
+            }
+        }
         if (flag) {
             stop_tick_tock();
             editor.putBoolean(colors[rowlimit-4]+savecompleted,true);
@@ -399,8 +433,15 @@ public void resumegame(){
     }
 
     public void mynewgame(View view) {
-        recreate();
-        dialog.dismiss();
+        try {
+            Intent intent = getIntent();
+            intent.putExtra("count", rowlimit);
+            intent.putExtra("saved", false);
+            startActivity(intent);
+            finish();
+        }
+        catch (Exception e){}
+
     }
 
     public void anotherlevel(View view) {
@@ -417,18 +458,35 @@ public void resumegame(){
         finish();
     }
 public void back(View view){
-    super.onBackPressed();
+   goback();
+}
+public void goback(){
+    try {Log.e("going","back");
+        Intent upIntent=NavUtils.getParentActivityIntent(this);;
+        if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+
+            TaskStackBuilder.create(this)
+                    .addNextIntentWithParentStack(upIntent)
+                    .startActivities();
+        } else {
+
+            NavUtils.navigateUpTo(this, upIntent);
+        }
+
+    } catch (Exception e) {Log.e("going","no");
+    }
 }
     @Override
     public void onBackPressed() {
         Log.e("zebra","a");
         stop_tick_tock();
-    if(game_started){ Log.e("zebra","b");
+   /* if(game_started){ Log.e("zebra","b");
         dialog.dismiss();
         super.onBackPressed();
         return;
-    }Log.e("zebra","c");
-        if(check_completed()) {
+    }Log.e("zebra","c");*/
+        if(total_queens==rowlimit&&check_completed()) {
+            Log.e("golden","crow");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View view = getLayoutInflater().inflate(R.layout.dialog, null);
             builder.setView(view);
@@ -437,8 +495,9 @@ public void back(View view){
             dialog.show();
         }
         else {
-
-            super.onBackPressed();
+            dialog.dismiss();
+            goback();
+           // super.onBackPressed();
         }
     }
 

@@ -163,5 +163,6 @@ LevelAdapter adapter;
             }
 
         } catch (Exception e) {
-        }    }
+        }
+    }
 }
