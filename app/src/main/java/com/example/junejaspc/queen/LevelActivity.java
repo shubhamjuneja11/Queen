@@ -143,6 +143,7 @@ LevelAdapter adapter;
         dialog.dismiss();
         intent=new Intent(LevelActivity.this,ChessBoard.class);
         intent.putExtra("count",a);
+        intent.putExtra("saved",false);
         startActivity(intent);
 
     }

@@ -29,7 +29,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     GridLayout gridLayout;
     ImageButton button_set[][];
     int i, height, width, totalbuttons, rowlimit, j, total_queens;
-    boolean decide;
+    boolean decide,game_started;
     TextView time;
     DisplayMetrics displayMetrics;
     boolean buttons_state[][];
@@ -60,6 +60,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
             View view = getLayoutInflater().inflate(R.layout.newdialog, null);
             builder.setView(view);
             dialog = builder.create();
+            dialog.setCancelable(false);
             dialog.show();
         }
         catch (Exception e){}
@@ -68,17 +69,19 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         dialog.dismiss();
         boardsetup();
         tick_tock();
-
+        game_started=true;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
+        game_started=false;
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         editor =sharedPreferences.edit();
         rowlimit = getIntent().getIntExtra("count", 4);
         saved=getIntent().getBooleanExtra("saved",false);
         savedtime=sharedPreferences.getLong(colors[rowlimit-4]+savemilli,0);
+        if(!saved)savedtime=0;
         Log.e("bolb",savedtime+"");
         time = (TextView) findViewById(R.id.mytime);
         shapeDrawable = new GradientDrawable();
@@ -314,7 +317,9 @@ public void resumegame(){
             tv1.setText(tv2.getText().toString());
             builder.setView(view);
             dialog = builder.create();
+            dialog.setCancelable(false);
             dialog.show();
+            game_started=false;
             return true;
         }
         return false;
@@ -411,12 +416,19 @@ public void resumegame(){
         startActivity(intent);
         finish();
     }
-
+public void back(View view){
+    super.onBackPressed();
+}
     @Override
     public void onBackPressed() {
+        Log.e("zebra","a");
         stop_tick_tock();
-
-        if(!check_completed()) {
+    if(game_started){ Log.e("zebra","b");
+        dialog.dismiss();
+        super.onBackPressed();
+        return;
+    }Log.e("zebra","c");
+        if(check_completed()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View view = getLayoutInflater().inflate(R.layout.dialog, null);
             builder.setView(view);
@@ -424,7 +436,10 @@ public void resumegame(){
             dialog.setCancelable(false);
             dialog.show();
         }
-        else super.onBackPressed();
+        else {
+
+            super.onBackPressed();
+        }
     }
 
     public void yessave(View view) {
