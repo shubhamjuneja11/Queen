@@ -22,6 +22,7 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row, parent, false);
+        view.setBackgroundResource(R.drawable.board_row_shape);
         return new MyViewHolder(view);
     }
 

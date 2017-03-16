@@ -1,5 +1,6 @@
 package com.example.junejaspc.queen;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,6 +53,24 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     SharedPreferences.Editor editor;
 
     @Override
+    protected void onResume() {
+        try {
+            super.onResume();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View view = getLayoutInflater().inflate(R.layout.newdialog, null);
+            builder.setView(view);
+            dialog = builder.create();
+            dialog.show();
+        }
+        catch (Exception e){}
+    }
+    public void startgame(View view){
+        dialog.dismiss();
+        boardsetup();
+        tick_tock();
+
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
@@ -78,7 +97,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         total_queens = 0;
         buttons_state = new boolean[rowlimit][rowlimit];
         decideFactor();
-        tick_tock();
+
         /*MobileAds.initialize(getApplicationContext(),"ca-app-pub-5750055305709604~2904023779");
         AdView mAdView = (AdView) findViewById(R.id.adView);
         //AdRequest adRequest = new AdRequest.Builder().build();
@@ -96,7 +115,6 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         width = displayMetrics.widthPixels / rowlimit;
         gridLayout.setRowCount(rowlimit);
         gridLayout.setColumnCount(rowlimit);
-        boardsetup();
     }
 
     public void boardsetup() {
@@ -273,7 +291,7 @@ public void resumegame(){
         return true;
     }
 
-    public void check_completed() {
+    public boolean check_completed() {
         boolean flag = true;
         int i, j;
         outerloop:
@@ -297,7 +315,9 @@ public void resumegame(){
             builder.setView(view);
             dialog = builder.create();
             dialog.show();
+            return true;
         }
+        return false;
     }
 
     public void tick_tock() {
@@ -395,12 +415,16 @@ public void resumegame(){
     @Override
     public void onBackPressed() {
         stop_tick_tock();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.dialog, null);
-        builder.setView(view);
-        dialog = builder.create();
-        dialog.setCancelable(false);
-        dialog.show();
+
+        if(!check_completed()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View view = getLayoutInflater().inflate(R.layout.dialog, null);
+            builder.setView(view);
+            dialog = builder.create();
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+        else super.onBackPressed();
     }
 
     public void yessave(View view) {

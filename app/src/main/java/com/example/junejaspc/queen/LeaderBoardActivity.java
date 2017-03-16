@@ -12,8 +12,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,27 +25,41 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     RecyclerView recyclerView;
     LeaderBoard_Adapter adapter;
     ArrayList<LeaderBoard_row> al;
+    ProgressBar progressBar;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        load_data();
+    }
+public void load_data(){
+    ConnectivityManager connectivity=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo network=connectivity.getActiveNetworkInfo();
+    if(network!=null&&network.isConnected())
+    {
+        Log.e("netz",1+"");
+        LoaderManager loaderManager=getSupportLoaderManager();
+        loaderManager.initLoader(1,null,this).forceLoad();
+
+    }
+    else{
+        Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.GONE);
+    }
+
+}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
         recyclerView=(RecyclerView) findViewById(R.id.recycler);
         al=new ArrayList<>();
+        progressBar=(ProgressBar)findViewById(R.id.progressBar1);
         adapter=new LeaderBoard_Adapter(al);
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        ConnectivityManager connectivity=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo network=connectivity.getActiveNetworkInfo();
-        if(network!=null&&network.isConnected())
-        {
-            Log.e("netz",1+"");
-            LoaderManager loaderManager=getSupportLoaderManager();
-            loaderManager.initLoader(1,null,this).forceLoad();
-
-        }
-
 
 
     }
@@ -61,6 +78,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
             Log.e("netz","nazi");
         else Log.e("netz","nazinot");*/
         adapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
         Log.e("netz",3+"");
     }
 
