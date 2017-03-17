@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/board_row_shape"
+    >
 
     <TextView
         android:id="@+id/textView2"
@@ -10,34 +12,78 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
         android:text="Enter username" />
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView2"
-        android:text="FGRGRGRGG"
+        android:hint="username"
+        android:gravity="center"
+        android:maxLength="50"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/username_bg"
         android:id="@+id/username"
-        android:layout_alignLeft="@+id/textView2"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textColorHint="@color/black"
+        android:layout_centerHorizontal="true"
+        android:textStyle="italic"
         />
-    <ScrollView
+    <View
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/white"
+        android:id="@+id/line"
         android:layout_below="@+id/username"
-        android:layout_height="wrap_content">
-    <GridLayout
-        android:layout_width="match_parent"
+        ></View>
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:rowCount="3"
-        android:id="@+id/avatargrid"
-        android:columnCount="2"
-        ></GridLayout>
-    </ScrollView>
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/line"
+        android:textColor="@color/white"
+        android:text="Choose your avatar"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        />
+        <GridView
+            android:layout_width="match_parent"
+            android:numColumns="2"
+            android:padding="40dp"
+            android:id="@+id/gridview"
+            android:layout_below="@+id/textView3"
+            android:layout_height="wrap_content">
+        </GridView>
+    <RelativeLayout
+        android:layout_below="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/username"
-        android:layout_marginTop="5dp"
-        android:layout_alignLeft="@+id/username"
+        style="@style/AppTheme.Button"
         android:text="Submit"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/submit"
         android:onClick="submit"
+        android:layout_marginLeft="40dp"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AppTheme.Button"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:text="Cancel"
+        android:onClick="back"
+        />
+    </RelativeLayout>
 </RelativeLayout>

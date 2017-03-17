@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,24 +78,6 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     SharedPreferences.Editor editor;
     private String url="http://geekyboy.16mb.com/saveusername.php";
     private URL myurl;
-    private static int avatarid[];
-
-    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-
-    public static int generateViewId() {
-        for (;;) {
-            final int result = sNextGeneratedId.get();
-            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
-            int newValue = result + 1;
-            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
-            if (sNextGeneratedId.compareAndSet(result, newValue)) {
-                return result;
-            }
-        }
-    }
-
-
-
 
     @Override
     protected void onPause() {
@@ -138,10 +121,6 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         editor =sharedPreferences.edit();
         game_started=true;
-
-        avatarid=new int[6];
-        for(int k=0;k<6;k++)
-            avatarid[i]=generateViewId();
 
         try {
             myurl=new URL(url);
@@ -517,6 +496,8 @@ public void back(View view){
 }
 public void goback(){
     try {Log.e("going","back");
+        if(dialog!=null)
+        dialog.dismiss();
         Intent upIntent=NavUtils.getParentActivityIntent(this);;
         if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
 
@@ -615,17 +596,26 @@ public void goback(){
             return true;
         else{
             if(createusername())
-                if(createavatar())
                     return true;
 
         }
         return false;
     }
-    public boolean createusername(){
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        view2=getLayoutInflater().inflate(R.layout.usernamedialog,null);
+    public boolean createusername() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        view2 = getLayoutInflater().inflate(R.layout.usernamedialog, null);
 
-try {
+        GridView gridview = (GridView) view2.findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(this));
+
+
+        builder.setView(view2);
+        dialog = builder.create();
+        dialog.show();
+        return true;
+    }
+
+/*try {
     GridLayout grid = (GridLayout) view2.findViewById(R.id.avatargrid);
     addImage(grid, R.drawable.avatar1,avatarid[0]);
     addImage(grid, R.drawable.avatar2,avatarid[1]);
@@ -649,31 +639,30 @@ return false;
         image.setBackgroundResource(i);
         image.setId(id);
         grid.addView(image);
-    }
+    }*/
     public void submit(View view){
         try {
             Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
             EditText user = (EditText) view2.findViewById(R.id.username);
             auth_user_name = user.getText().toString();
+            avatar=ImageAdapter.selected_avatar;
             ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo network = connectivity.getActiveNetworkInfo();
             if (network != null && network.isConnected()) {
-                new MyAsyncClass().execute();
-                dialog1.dismiss();
+              new MyAsyncClass().execute();
+
+                if(!done)
+                    Toast.makeText(this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
+                else {
+                    dialog.dismiss();
+                    Toast.makeText(this, "Username created", Toast.LENGTH_SHORT).show();
+                }
             }
         }
         catch(Exception e){
             e.printStackTrace();
             Log.e("bvp",e.getMessage());
             Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();}
-    }
-    public boolean createavatar(){
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        View view=getLayoutInflater().inflate(R.layout.avatardialog,null);
-        builder.setView(view);
-        AlertDialog dialog=builder.create();
-        dialog.show();
-        return true;
     }
     @Override
     public Loader<LeaderBoard_row> onCreateLoader(int id, Bundle args) {
@@ -708,7 +697,7 @@ return false;
         protected Boolean doInBackground(Void... params) {
             if(connect(myurl))
             return true;
-            else return true;
+            else return false;
         }
 
         @Override
@@ -752,6 +741,7 @@ return false;
 
         if(checkresponse())
             return true;
+        else return false;
     } catch (IOException e) {
         Log.e("bvp",e.getMessage());
         e.printStackTrace();
