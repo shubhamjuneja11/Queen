@@ -18,7 +18,7 @@ public class ImageAdapter extends BaseAdapter implements View.OnClickListener {
     private Context mContext;
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
-     public static int selected_avatar,avatar_id[]=new int[6];
+     public static int selected_avatar=0,avatar_id[]=new int[6];
     private boolean avatar_status[]=new boolean[6];
     public static int generateViewId() {
         for (;;) {
@@ -35,6 +35,7 @@ public class ImageAdapter extends BaseAdapter implements View.OnClickListener {
     // Constructor
     public ImageAdapter(Context c) {
         mContext = c;
+        avatar_status[0]=true;
     }
 
     public int getCount() {

@@ -489,7 +489,15 @@ public void resumegame(){
         startActivity(intent);
         finish();*/
        dialog.dismiss();
-       check_user();
+        Log.e("joey","1");
+       if(check_user()) {
+           putonBoard();
+           Intent intent=new Intent(ChessBoard.this,LeaderBoardActivity.class);
+           intent.putExtra("level",rowlimit-3);
+           startActivity(intent);
+       }
+
+        Log.e("joey","2");
     }
 public void back(View view){
    goback();
@@ -521,7 +529,7 @@ public void goback(){
         super.onBackPressed();
         return;
     }Log.e("zebra","c");*/
-        if(total_queens==rowlimit&&check_completed()) {
+        if(!(total_queens==rowlimit&&check_completed())) {
             Log.e("golden","crow");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View view = getLayoutInflater().inflate(R.layout.dialog, null);
@@ -564,21 +572,24 @@ public void goback(){
 
     public void putonBoard() {
         mytime = time.getText().toString();
-        user_name = "shubh";
-        mylevel = 1;
+        mylevel = rowlimit-3;
         senddata();
     }
     public void senddata(){
+        Log.e("joey","fddd");
         ConnectivityManager connectivity=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo network=connectivity.getActiveNetworkInfo();
         if(network!=null&&network.isConnected())
-        {
-            if(check_user()){
+        {Log.e("joey","xxxxx");
+            if(check_user()){Log.e("joey","fdddddddddddddd");
             LoaderManager loaderManager=getSupportLoaderManager();
             loaderManager.initLoader(1,null,this).forceLoad();
+
             }
+            else{Log.e("joey","asshole");}
 
         }
+        else Log.e("joey","popat");
     }
     public void senddata(View view){
         ConnectivityManager connectivity=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -591,78 +602,71 @@ public void goback(){
         }
     }
     public boolean check_user(){
-        String username=sharedPreferences.getString("username","user");
-        if(!username.equals("user"))
+        Log.e("joey","3");
+        user_name=sharedPreferences.getString("username","");
+        Log.e("joey",user_name);
+        if(!user_name.equals(""))
             return true;
-        else{
+        else{Log.e("joey","4");
             if(createusername())
                     return true;
 
         }
+        Log.e("joey","5");
         return false;
     }
     public boolean createusername() {
+        Log.e("joey","6");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         view2 = getLayoutInflater().inflate(R.layout.usernamedialog, null);
 
         GridView gridview = (GridView) view2.findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
 
-
         builder.setView(view2);
         dialog = builder.create();
+        dialog.setCancelable(false);
         dialog.show();
         return true;
     }
 
-/*try {
-    GridLayout grid = (GridLayout) view2.findViewById(R.id.avatargrid);
-    addImage(grid, R.drawable.avatar1,avatarid[0]);
-    addImage(grid, R.drawable.avatar2,avatarid[1]);
-    addImage(grid, R.drawable.avatar3,avatarid[2]);
-    addImage(grid, R.drawable.avatar4,avatarid[3]);
-    addImage(grid, R.drawable.avatar5,avatarid[4]);
-    addImage(grid, R.drawable.avatar6,avatarid[5]);
-    builder.setView(view2);
-    dialog1 = builder.create();
-    dialog1.show();
-    Log.e("titu","1");
-    return true;
-}
-catch (Exception e){
-Log.e("titu","2");
-}
-return false;
-    }
-    public void addImage(GridLayout grid,int i,int id){
-        ImageButton image=new ImageButton(this);
-        image.setBackgroundResource(i);
-        image.setId(id);
-        grid.addView(image);
-    }*/
     public void submit(View view){
         try {
-            Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
+            Log.e("joey","7");
             EditText user = (EditText) view2.findViewById(R.id.username);
-            auth_user_name = user.getText().toString();
-            avatar=ImageAdapter.selected_avatar;
-            ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo network = connectivity.getActiveNetworkInfo();
-            if (network != null && network.isConnected()) {
-              new MyAsyncClass().execute();
+            user_name = user.getText().toString();
+            if(checkusername()) {
+                avatar = ImageAdapter.selected_avatar;
+                ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo network = connectivity.getActiveNetworkInfo();
+                if (network != null && network.isConnected()) {
+                    new MyAsyncClass().execute();
+                    Log.e("joey","8");
+                    if (done)
+                        Toast.makeText(this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
+                    else {Log.e("joey","bob");
+                        dialog.dismiss();
+                        editor.putString("username",user_name);
+                        editor.apply();
+                        Log.e("joey",user_name);
+                        Toast.makeText(this, "Username created", Toast.LENGTH_SHORT).show();
 
-                if(!done)
-                    Toast.makeText(this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
-                else {
-                    dialog.dismiss();
-                    Toast.makeText(this, "Username created", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }
-        catch(Exception e){
+        catch(Exception e){Log.e("joey","9");
             e.printStackTrace();
-            Log.e("bvp",e.getMessage());
-            Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();}
+        }
+    }
+    private boolean checkusername(){
+       user_name=user_name.trim();
+        if(user_name.equals(""))
+        {
+            Toast.makeText(this, "Username can't be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else return true;
     }
     @Override
     public Loader<LeaderBoard_row> onCreateLoader(int id, Bundle args) {
@@ -696,7 +700,7 @@ return false;
         @Override
         protected Boolean doInBackground(Void... params) {
             if(connect(myurl))
-            return true;
+            { Log.e("chima", "10");return true;}
             else return false;
         }
 
@@ -704,8 +708,12 @@ return false;
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if(aBoolean)
+            {
                 done=true;
+
+            }
             else done=false;
+            Log.e("chima", done+"");
 
         }
     }
@@ -721,7 +729,7 @@ return false;
         connection.setDoOutput(true);
 
         Uri.Builder builder = new Uri.Builder()
-                .appendQueryParameter("username",auth_user_name)
+                .appendQueryParameter("username",user_name)
                 .appendQueryParameter("avatar",String.valueOf(avatar));
 
         String query = builder.build().getEncodedQuery();
@@ -739,9 +747,11 @@ return false;
         inputstream=connection.getInputStream();
         response=readfromstream(inputstream);
 
-        if(checkresponse())
+        if(checkresponse()) {
+            Log.e("chima", "3");
             return true;
-        else return false;
+        }
+        else { Log.e("chima", "4");return false;}
     } catch (IOException e) {
         Log.e("bvp",e.getMessage());
         e.printStackTrace();
@@ -752,7 +762,9 @@ return false;
         try {Log.e("response",response);
             JSONObject object=new JSONObject(response);
             int m=object.getInt("success");
-            if(m==0)return false;
+            Log.e("chima","1");
+            if(m==0){            Log.e("chima","2");
+                return false;}
             else return true;
         } catch (JSONException e) {
             e.printStackTrace();
