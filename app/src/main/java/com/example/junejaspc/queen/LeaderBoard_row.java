@@ -8,6 +8,16 @@ public class LeaderBoard_row {
     private String username,time;
     private int level;
 
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
+    }
+
+    private int icon;
+
     public String getUsername() {
         return username;
     }
@@ -32,10 +42,11 @@ public class LeaderBoard_row {
         this.level = level;
     }
 
-    public LeaderBoard_row(String username, int level,String time) {
+    public LeaderBoard_row(String username, int level,String time,int icon) {
 
         this.username = username;
         this.time = time;
         this.level = level;
+        this.icon=icon;
     }
 }

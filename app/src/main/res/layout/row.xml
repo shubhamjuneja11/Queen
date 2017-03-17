@@ -26,7 +26,7 @@
         <ImageView
             android:layout_height="80dp"
             android:layout_width="match_parent"
-            android:id="@+id/imageView1"
+            android:id="@+id/usericon"
             android:src="@drawable/steve"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true">

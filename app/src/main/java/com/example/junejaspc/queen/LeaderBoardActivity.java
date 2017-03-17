@@ -29,6 +29,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     ArrayList<LeaderBoard_row> al;
     ProgressBar progressBar;
     long a,b;
+    public static int level=1;
     @Override
     protected void onResume() {
         super.onResume();
@@ -62,6 +63,7 @@ public void load_data(){
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        level=getIntent().getIntExtra("level",1);
 
     }
     @Override

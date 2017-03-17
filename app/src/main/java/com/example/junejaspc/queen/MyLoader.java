@@ -1,6 +1,7 @@
 package com.example.junejaspc.queen;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 import android.widget.Toast;
@@ -9,9 +10,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -62,6 +66,21 @@ ArrayList<LeaderBoard_row>al;
         connection.setRequestMethod("GET");
         connection.setReadTimeout(10000);
         connection.setReadTimeout(15000);
+        connection.setDoInput(true);
+        connection.setDoOutput(true);
+
+        Uri.Builder builder = new Uri.Builder()
+                .appendQueryParameter("level",String.valueOf(LeaderBoardActivity.level));
+        String query = builder.build().getEncodedQuery();
+
+        OutputStream os = connection.getOutputStream();
+        BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(os, "UTF-8"));
+        writer.write(query);
+        writer.flush();
+        writer.close();
+        os.close();
+
         connection.connect();
 
         inputstream=connection.getInputStream();
@@ -78,14 +97,14 @@ ArrayList<LeaderBoard_row>al;
             JSONArray array=jsonObject.getJSONArray(arrayname);
             //JSONObject jsonObject1=jsonObject.getJSONObject(arrayname);
             Log.e("netz","12");
-            for(int i=0;i<array.length();i++){Log.e("netz","13");
+            for(int i=0;i<array.length();i++){
                 JSONObject jsonObject1=array.getJSONObject(i);
                 String user=jsonObject1.getString(username);
                 int level=jsonObject1.getInt(MyLoader.level);
                 String time=jsonObject1.getString(MyLoader.time);
                 Log.e("buzz",user); Log.e("buzz",level+""); Log.e("buzz",time);
-
-                LeaderBoard_row score=new LeaderBoard_row(user,level,time);
+                int icon=jsonObject1.getInt("avatar");
+                LeaderBoard_row score=new LeaderBoard_row(user,level,time,icon);
                 al.add(score);
 
             }

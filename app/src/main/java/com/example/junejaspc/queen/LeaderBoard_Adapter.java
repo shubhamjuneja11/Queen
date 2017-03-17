@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,8 +18,14 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
     ArrayList<LeaderBoard_row> al;
     long mins,hrs,secs,time;
     String seconds,minutes,hours,milliseconds;
+    public Integer[] icons = {
+            R.drawable.avatar1, R.drawable.avatar2,
+            R.drawable.avatar3, R.drawable.avatar4,
+            R.drawable.avatar5, R.drawable.avatar6,
+    };
     public LeaderBoard_Adapter(ArrayList<LeaderBoard_row> al){
         this.al=al;
+
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,9 +42,10 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
             holder.username.setText(row.getUsername());
             holder.level.setText(String.valueOf(row.getLevel()));
             holder.time.setText(settime(row.getTime()));
+            holder.icon.setImageResource(icons[row.getIcon()]);
+            //holder.icon.setImageResource(icons[]);
         }
         catch (Exception e){
-            Log.e("zila",e.getMessage());
             e.printStackTrace();}
     }
 
@@ -48,13 +56,14 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView username,level,time;
+        ImageView icon;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             username=(TextView)itemView.findViewById(R.id.username);
             level=(TextView)itemView.findViewById(R.id.mylevel);
             time=(TextView)itemView.findViewById(R.id.mytime);
-
+            icon=(ImageView)itemView.findViewById(R.id.usericon);
         }
     }
     public String settime(String t){ try {
@@ -111,4 +120,5 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
         String b=(hours + ":" + minutes + ":" + seconds + "." + milliseconds);
         return b;
     }
+
 }

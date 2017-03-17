@@ -58,7 +58,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     DisplayMetrics displayMetrics;
     boolean buttons_state[][],done;
     Runnable startTimer;
-    AlertDialog dialog,dialog1;
+    AlertDialog dialog;
     boolean saved;
     View view2;
     GradientDrawable shapeDrawable, shape2, shape3;
@@ -73,7 +73,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     private Handler mHandler = new Handler();
     SharedPreferences sharedPreferences;
     public static String savecompleted="complete";
-    public static String savemilli="milli",auth_user_name,response;
+    public static String savemilli="milli",response;
     private long savedtime;
     SharedPreferences.Editor editor;
     private String url="http://geekyboy.16mb.com/saveusername.php";
@@ -482,12 +482,6 @@ public void resumegame(){
     }
 
     public void onleaderboard(View view) {
-        //putonBoard();
-       /* Intent intent = new Intent(this, LeaderBoardActivity.class);
-        intent.putExtra("count", rowlimit);
-        intent.putExtra("submit",true);
-        startActivity(intent);
-        finish();*/
        dialog.dismiss();
         Log.e("joey","1");
        if(check_user()) {
@@ -647,6 +641,7 @@ public void goback(){
                     else {Log.e("joey","bob");
                         dialog.dismiss();
                         editor.putString("username",user_name);
+                        editor.putInt("avatar",avatar);
                         editor.apply();
                         Log.e("joey",user_name);
                         Toast.makeText(this, "Username created", Toast.LENGTH_SHORT).show();
@@ -674,7 +669,7 @@ public void goback(){
             user_name=sharedPreferences.getString("username","user");
             mylevel=rowlimit-3;
             mytime=String.valueOf(elapsedTime);
-            return new LoaderForSubmit(this,new LeaderBoard_row(user_name,mylevel,mytime));
+            return new LoaderForSubmit(this,new LeaderBoard_row(user_name,mylevel,mytime,avatar));
         } catch (MalformedURLException e) {
             Toast.makeText(this, "4", Toast.LENGTH_SHORT).show();
             Log.e("rolz","rockandroll");
