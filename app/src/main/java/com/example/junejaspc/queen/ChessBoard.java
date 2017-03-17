@@ -43,6 +43,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.example.junejaspc.queen.LoaderForSubmit.readfromstream;
 
@@ -54,7 +55,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     boolean decide,game_started;
     TextView time;
     DisplayMetrics displayMetrics;
-    boolean buttons_state[][];
+    boolean buttons_state[][],done;
     Runnable startTimer;
     AlertDialog dialog,dialog1;
     boolean saved;
@@ -76,6 +77,25 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     SharedPreferences.Editor editor;
     private String url="http://geekyboy.16mb.com/saveusername.php";
     private URL myurl;
+    private static int avatarid[];
+
+    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
+
+    public static int generateViewId() {
+        for (;;) {
+            final int result = sNextGeneratedId.get();
+            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+            int newValue = result + 1;
+            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
+            if (sNextGeneratedId.compareAndSet(result, newValue)) {
+                return result;
+            }
+        }
+    }
+
+
+
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -118,6 +138,10 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         editor =sharedPreferences.edit();
         game_started=true;
+
+        avatarid=new int[6];
+        for(int k=0;k<6;k++)
+            avatarid[i]=generateViewId();
 
         try {
             myurl=new URL(url);
@@ -254,6 +278,7 @@ public void resumegame(){
             if (total_queens < rowlimit) {Log.e("rollz","mataao");
                 total_queens++;
                 ((ImageButton) v).setImageResource(R.drawable.queen);
+                ((ImageButton) v).setScaleType(ImageView.ScaleType.CENTER_CROP);
                // buttons_state[i][j] = !buttons_state[i][j];
                 check_status(i, j);
                 if (total_queens == rowlimit)
@@ -599,10 +624,31 @@ public void goback(){
     public boolean createusername(){
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         view2=getLayoutInflater().inflate(R.layout.usernamedialog,null);
-        builder.setView(view2);
-         dialog1=builder.create();
-        dialog1.show();
-        return true;
+
+try {
+    GridLayout grid = (GridLayout) view2.findViewById(R.id.avatargrid);
+    addImage(grid, R.drawable.avatar1,avatarid[0]);
+    addImage(grid, R.drawable.avatar2,avatarid[1]);
+    addImage(grid, R.drawable.avatar3,avatarid[2]);
+    addImage(grid, R.drawable.avatar4,avatarid[3]);
+    addImage(grid, R.drawable.avatar5,avatarid[4]);
+    addImage(grid, R.drawable.avatar6,avatarid[5]);
+    builder.setView(view2);
+    dialog1 = builder.create();
+    dialog1.show();
+    Log.e("titu","1");
+    return true;
+}
+catch (Exception e){
+Log.e("titu","2");
+}
+return false;
+    }
+    public void addImage(GridLayout grid,int i,int id){
+        ImageButton image=new ImageButton(this);
+        image.setBackgroundResource(i);
+        image.setId(id);
+        grid.addView(image);
     }
     public void submit(View view){
         try {
@@ -660,16 +706,21 @@ public void goback(){
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            connect(myurl);
+            if(connect(myurl))
             return true;
+            else return true;
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+            if(aBoolean)
+                done=true;
+            else done=false;
+
         }
     }
-    public void connect(URL url){
+    public boolean connect(URL url){
     try{
         InputStream inputstream=null;
         HttpURLConnection connection=null;
@@ -698,21 +749,25 @@ public void goback(){
 
         inputstream=connection.getInputStream();
         response=readfromstream(inputstream);
-        Log.e("netz",response);
-        checkresponse();
+
+        if(checkresponse())
+            return true;
     } catch (IOException e) {
         Log.e("bvp",e.getMessage());
         e.printStackTrace();
     }
+    return false;
     }
-    public void checkresponse(){
+    public boolean checkresponse(){
         try {Log.e("response",response);
             JSONObject object=new JSONObject(response);
             int m=object.getInt("success");
-
+            if(m==0)return false;
+            else return true;
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("bvp",e.getMessage());
         }
+        return false;
     }
 }
