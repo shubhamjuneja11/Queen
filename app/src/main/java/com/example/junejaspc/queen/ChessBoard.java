@@ -578,22 +578,12 @@ public void goback(){
         NetworkInfo network=connectivity.getActiveNetworkInfo();
         if(network!=null&&network.isConnected())
         {Log.e("joey","xxxxx");
-
+        Log.e("joey",user_name);
             LoaderManager loaderManager=getSupportLoaderManager();
             loaderManager.initLoader(1,null,this).forceLoad();
 
         }
         else Log.e("joey","popat");
-    }
-    public void senddata(View view){
-        ConnectivityManager connectivity=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo network=connectivity.getActiveNetworkInfo();
-        if(network!=null&&network.isConnected())
-        {
-            LoaderManager loaderManager=getSupportLoaderManager();
-            loaderManager.initLoader(1,null,this).forceLoad();
-
-        }
     }
     public boolean check_user(){
         Log.e("joey","3");
@@ -636,17 +626,7 @@ public void goback(){
                 if (network != null && network.isConnected()) {
                     new MyAsyncClass().execute();
                     Log.e("joey","8");
-                    if (done)
-                        Toast.makeText(this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
-                    else {Log.e("joey","bob");
-                        dialog.dismiss();
-                        editor.putString("username",user_name);
-                        editor.putInt("avatar",avatar);
-                        editor.apply();
-                        Log.e("joey",user_name);
-                        Toast.makeText(this, "Username created", Toast.LENGTH_SHORT).show();
 
-                    }
                 }
             }
         }
@@ -708,6 +688,18 @@ public void goback(){
 
             }
             else done=false;
+            if (done)
+                Toast.makeText(ChessBoard.this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
+            else {Log.e("joey","bob");
+                dialog.dismiss();
+                editor.putString("username",user_name);
+                editor.putInt("avatar",avatar);
+                editor.apply();
+                Log.e("joey",user_name);
+                Toast.makeText(ChessBoard.this, "Username created", Toast.LENGTH_SHORT).show();
+                putandgo();
+
+            }
             Log.e("chima", done+"");
 
         }

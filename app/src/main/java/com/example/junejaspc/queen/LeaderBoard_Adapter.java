@@ -50,7 +50,6 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
         try {
             LeaderBoard_row row = al.get(position);
             holder.username.setText(row.getUsername());
-            holder.level.setText(String.valueOf(row.getLevel()));
             holder.time.setText(settime(row.getTime()));
             holder.icon.setImageResource(icons[row.getIcon()]);
             if(username.equals(row.getUsername())) {Log.e("delhi","1");
@@ -71,7 +70,7 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView username,level,time;
+        TextView username,time;
         ImageView icon;
         LinearLayout linearLayout;
 
@@ -82,7 +81,6 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
             }
             catch (Exception e){}
             username=(TextView)itemView.findViewById(R.id.username);
-            level=(TextView)itemView.findViewById(R.id.mylevel);
             time=(TextView)itemView.findViewById(R.id.mytime);
             icon=(ImageView)itemView.findViewById(R.id.usericon);
         }

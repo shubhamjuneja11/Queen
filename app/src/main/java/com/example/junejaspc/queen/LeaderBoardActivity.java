@@ -1,9 +1,12 @@
 package com.example.junejaspc.queen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -46,9 +49,10 @@ public static void change(){adapter.notifyDataSetChanged();}
         if (network != null && network.isConnected()) {
             Log.e("netz", 1 + "");
             LoaderManager loaderManager = getSupportLoaderManager();
-           // loaderManager.initLoader(k++, null, this).forceLoad();
+            loaderManager.initLoader(k++, null, this).forceLoad();
+
             //loaderManager.initLoader(0, null, this).forceLoad();
-            loaderManager.restartLoader(0,null,this).forceLoad();
+            //loaderManager.restartLoader(0,null,this).forceLoad();
 
         } else {
             Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
@@ -69,7 +73,7 @@ public static void change(){adapter.notifyDataSetChanged();}
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        level = getIntent().getIntExtra("level", 1);
+        selected_level=level = getIntent().getIntExtra("level", 1);
 
     }
 
@@ -99,7 +103,6 @@ public static void change(){adapter.notifyDataSetChanged();}
 
     @Override
     public void onLoaderReset(Loader<ArrayList<LeaderBoard_row>> loader) {
-    Log.e("jetha","rest");
     }
 
     @Override
@@ -170,5 +173,20 @@ public static void change(){adapter.notifyDataSetChanged();}
             load_data();
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent upIntent= NavUtils.getParentActivityIntent(this);;
+        if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+
+            TaskStackBuilder.create(this)
+                    .addNextIntentWithParentStack(upIntent)
+                    .startActivities();
+        } else {
+
+            NavUtils.navigateUpTo(this, upIntent);
+        }
+
     }
 }

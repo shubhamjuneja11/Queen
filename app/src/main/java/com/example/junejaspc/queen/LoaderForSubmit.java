@@ -44,15 +44,15 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
             //response=MyLoader.makerequest(new URL(url));
 
 
-            InputStream inputstream=null;
-            HttpURLConnection connection=null;
+            InputStream inputstream;
+            HttpURLConnection connection;
             connection=(HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setReadTimeout(10000);
             connection.setReadTimeout(15000);
             connection.setDoInput(true);
             connection.setDoOutput(true);
-
+            Log.e("joeygiving",data.getUsername());
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("username",data.getUsername())
                     .appendQueryParameter("level", String.valueOf(data.getLevel()))
@@ -71,7 +71,7 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
 
             inputstream=connection.getInputStream();
             response=readfromstream(inputstream);
-            Log.e("netz",response);
+            Log.e("response",response);
             checkresponse();
         } catch (IOException e) {
             e.printStackTrace();
