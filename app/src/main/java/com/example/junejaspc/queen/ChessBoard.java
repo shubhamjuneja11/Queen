@@ -485,13 +485,16 @@ public void resumegame(){
        dialog.dismiss();
         Log.e("joey","1");
        if(check_user()) {
-           putonBoard();
-           Intent intent=new Intent(ChessBoard.this,LeaderBoardActivity.class);
-           intent.putExtra("level",rowlimit-3);
-           startActivity(intent);
+          putandgo();
        }
 
         Log.e("joey","2");
+    }
+    public void putandgo(){
+        putonBoard();
+        Intent intent=new Intent(ChessBoard.this,LeaderBoardActivity.class);
+        intent.putExtra("level",rowlimit-3);
+        startActivity(intent);
     }
 public void back(View view){
    goback();
@@ -575,12 +578,9 @@ public void goback(){
         NetworkInfo network=connectivity.getActiveNetworkInfo();
         if(network!=null&&network.isConnected())
         {Log.e("joey","xxxxx");
-            if(check_user()){Log.e("joey","fdddddddddddddd");
+
             LoaderManager loaderManager=getSupportLoaderManager();
             loaderManager.initLoader(1,null,this).forceLoad();
-
-            }
-            else{Log.e("joey","asshole");}
 
         }
         else Log.e("joey","popat");
@@ -603,7 +603,7 @@ public void goback(){
             return true;
         else{Log.e("joey","4");
             if(createusername())
-                    return true;
+                    return false;
 
         }
         Log.e("joey","5");

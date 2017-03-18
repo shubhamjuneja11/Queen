@@ -1,11 +1,15 @@
 package com.example.junejaspc.queen;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,14 +22,20 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
     ArrayList<LeaderBoard_row> al;
     long mins,hrs,secs,time;
     String seconds,minutes,hours,milliseconds;
+    SharedPreferences sharedPreferences;
+    String username;
+    Context context;
     public Integer[] icons = {
             R.drawable.avatar1, R.drawable.avatar2,
             R.drawable.avatar3, R.drawable.avatar4,
             R.drawable.avatar5, R.drawable.avatar6,
     };
-    public LeaderBoard_Adapter(ArrayList<LeaderBoard_row> al){
+    public LeaderBoard_Adapter(ArrayList<LeaderBoard_row> al, Context context){
         this.al=al;
-
+        this.context=context;
+        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(context);
+        username=sharedPreferences.getString("username","");
+        Log.e("delhi12",username);
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,9 +53,15 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
             holder.level.setText(String.valueOf(row.getLevel()));
             holder.time.setText(settime(row.getTime()));
             holder.icon.setImageResource(icons[row.getIcon()]);
+            if(username.equals(row.getUsername())) {Log.e("delhi","1");
+                holder.linearLayout.setBackgroundResource(R.drawable.board_row_shape_green);
+            }
+            else{
+                Log.e("delhi90",row.getUsername());
+            }
             //holder.icon.setImageResource(icons[]);
         }
-        catch (Exception e){
+        catch (Exception e){Log.e("delhi","3");Log.e("delhi",e.getMessage());
             e.printStackTrace();}
     }
 
@@ -57,9 +73,14 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView username,level,time;
         ImageView icon;
+        LinearLayout linearLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            try {
+                linearLayout = (LinearLayout) itemView;
+            }
+            catch (Exception e){}
             username=(TextView)itemView.findViewById(R.id.username);
             level=(TextView)itemView.findViewById(R.id.mylevel);
             time=(TextView)itemView.findViewById(R.id.mytime);

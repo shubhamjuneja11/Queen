@@ -34,11 +34,13 @@ ArrayList<LeaderBoard_row>al;
     private static String time="time";
     Context context;
     static String response;
-    public MyLoader(Context context,String url,ArrayList<LeaderBoard_row> al) {
+    LeaderBoard_Adapter adapter;
+    public MyLoader(Context context,String url,ArrayList<LeaderBoard_row> al,LeaderBoard_Adapter adapter) {
         super(context);
         this.url=url;
         this.context=context;
         this.al=al;
+        this.adapter=adapter;
         Log.e("netz","4");
 
     }
@@ -108,6 +110,7 @@ ArrayList<LeaderBoard_row>al;
                 al.add(score);
 
             }
+           //LeaderBoardActivity.change();
         }
         catch(Exception e){
             Log.e("netz",response);
