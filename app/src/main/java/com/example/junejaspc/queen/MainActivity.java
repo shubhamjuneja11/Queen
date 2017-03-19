@@ -36,7 +36,7 @@ boolean exit=false;
        Intent intent=new Intent(this,HelpClass.class);
        startActivity(intent);
    }
-   public void resume(View view){
+   public void contactus(View view){
 
    }
 

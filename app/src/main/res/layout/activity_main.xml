@@ -2,6 +2,7 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <Button
         android:layout_width="match_parent"
@@ -10,22 +11,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="New Game"
+        android:background="@drawable/level_button"
         android:onClick="newgame"
         style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/level_border"
-        android:layout_gravity="center"
-        android:text="Resume"
-        android:onClick="resume"
-        style="@style/AppTheme.Button"
-        android:layout_marginTop="20dp"
-        />
+
     <Button
         android:layout_width="match_parent"
         android:layout_marginLeft="20dp"
@@ -34,6 +25,7 @@
         android:layout_gravity="center"
         android:text="LeaderBoard"
         android:onClick="openboard"
+        android:background="@drawable/level_button"
         style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
         />
@@ -44,9 +36,22 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Help"
+        android:background="@drawable/level_button"
         android:onClick="openhelp"
         style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Contact Us"
+        android:onClick="contactus"
+        style="@style/AppTheme.Button"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/level_button"
         />
     <Button
         android:layout_width="match_parent"
@@ -58,5 +63,6 @@
         android:onClick="exit"
         style="@style/AppTheme.Button"
         android:layout_marginTop="20dp"
+        android:background="@drawable/level_button"
         />
 </LinearLayout>
