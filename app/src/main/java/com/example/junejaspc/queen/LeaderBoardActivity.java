@@ -9,6 +9,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -27,37 +28,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class LeaderBoardActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<LeaderBoard_row>> {
+public class LeaderBoardActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<LeaderBoard_row>>,SwipeRefreshLayout.OnRefreshListener {
     private String url = "http://geekyboy.16mb.com/leaderboard.php";
     RecyclerView recyclerView;
      static LeaderBoard_Adapter adapter;
     ArrayList<LeaderBoard_row> al;
-    ProgressBar progressBar;
     long a, b;
     public static int level = 1;
     private int selected_level=1;
     int k=0;
+    SwipeRefreshLayout swipe;
     @Override
     protected void onResume() {
         super.onResume();
         load_data();
     }
-public static void change(){adapter.notifyDataSetChanged();}
     public void load_data() {
+        swipe.setRefreshing(true);
         ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo network = connectivity.getActiveNetworkInfo();
         if (network != null && network.isConnected()) {
             Log.e("netz", 1 + "");
             LoaderManager loaderManager = getSupportLoaderManager();
             al.clear();
-            loaderManager.initLoader(k++, null, this).forceLoad();
+            loaderManager.restartLoader(0,null,this).forceLoad();
+            //loaderManager.initLoader(k++, null, this).forceLoad();
 
             //loaderManager.initLoader(0, null, this).forceLoad();
             //loaderManager.restartLoader(0,null,this).forceLoad();
 
         } else {
             Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
+
         }
 
     }
@@ -67,14 +69,17 @@ public static void change(){adapter.notifyDataSetChanged();}
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
+        swipe=(SwipeRefreshLayout)findViewById(R.id.swipe);
         al = new ArrayList<>();
-        progressBar = (ProgressBar) findViewById(R.id.progressBar1);
         adapter = new LeaderBoard_Adapter(al, this);
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         selected_level=level = getIntent().getIntExtra("level", 1);
+        swipe.setOnRefreshListener(this);
+
+
 
     }
 
@@ -87,7 +92,6 @@ public static void change(){adapter.notifyDataSetChanged();}
 
     @Override
     public void onLoadFinished(Loader<ArrayList<LeaderBoard_row>> loader, ArrayList<LeaderBoard_row> data) {
-    Log.e("jetha","finisj");
         Collections.sort(al, new Comparator<LeaderBoard_row>() {
             @Override
             public int compare(LeaderBoard_row o1, LeaderBoard_row o2) {
@@ -98,8 +102,11 @@ public static void change(){adapter.notifyDataSetChanged();}
             }
         });
         adapter.notifyDataSetChanged();
-        progressBar.setVisibility(View.GONE);
-        Log.e("nepo", al.size()+"");
+        swipe.setRefreshing(false);
+        try {
+            if (adapter.my_rank != -1)
+                recyclerView.scrollToPosition(adapter.my_rank);
+        }catch (Exception e){}
     }
 
     @Override
@@ -169,11 +176,9 @@ public static void change(){adapter.notifyDataSetChanged();}
     public void reloadData(){
         if(selected_level!=level){
             level=selected_level;
-            al.clear();
-            progressBar.setVisibility(View.VISIBLE);
-            load_data();
-
         }
+        al.clear();
+        load_data();
     }
 
     @Override
@@ -189,5 +194,10 @@ public static void change(){adapter.notifyDataSetChanged();}
             NavUtils.navigateUpTo(this, upIntent);
         }
 
+    }
+
+    @Override
+    public void onRefresh() {
+        reloadData();
     }
 }

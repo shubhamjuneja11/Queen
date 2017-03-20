@@ -25,6 +25,7 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
     SharedPreferences sharedPreferences;
     String username;
     Context context;
+    int my_rank=-1;
     public Integer[] icons = {
             R.drawable.avatar1, R.drawable.avatar2,
             R.drawable.avatar3, R.drawable.avatar4,
@@ -35,7 +36,6 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
         this.context=context;
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(context);
         username=sharedPreferences.getString("username","");
-        Log.e("delhi12",username);
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,8 +52,10 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
             holder.username.setText(row.getUsername());
             holder.time.setText(settime(row.getTime()));
             holder.icon.setImageResource(icons[row.getIcon()]);
-            if(username.equals(row.getUsername())) {Log.e("delhi","1");
+            holder.rank.setText(String.valueOf(position+1));
+            if(username.equals(row.getUsername())) {
                 holder.linearLayout.setBackgroundResource(R.drawable.board_row_shape_green);
+                my_rank=position;
             }
             else{
                 holder.linearLayout.setBackgroundResource(R.drawable.board_row_shape);
@@ -70,7 +72,7 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView username,time;
+        TextView username,time,rank;
         ImageView icon;
         LinearLayout linearLayout;
 
@@ -83,6 +85,7 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
             username=(TextView)itemView.findViewById(R.id.username);
             time=(TextView)itemView.findViewById(R.id.mytime);
             icon=(ImageView)itemView.findViewById(R.id.usericon);
+            rank=(TextView)itemView.findViewById(R.id.rank);
         }
     }
     public String settime(String t){ try {
