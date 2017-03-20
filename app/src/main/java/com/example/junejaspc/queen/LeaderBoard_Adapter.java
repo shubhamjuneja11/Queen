@@ -41,7 +41,7 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row, parent, false);
-        view.setBackgroundResource(R.drawable.board_row_shape);
+        //view.setBackgroundResource(R.drawable.board_row_shape);
         return new MyViewHolder(view);
     }
 
@@ -56,7 +56,7 @@ public class LeaderBoard_Adapter extends RecyclerView.Adapter<LeaderBoard_Adapte
                 holder.linearLayout.setBackgroundResource(R.drawable.board_row_shape_green);
             }
             else{
-                Log.e("delhi90",row.getUsername());
+                holder.linearLayout.setBackgroundResource(R.drawable.board_row_shape);
             }
             //holder.icon.setImageResource(icons[]);
         }

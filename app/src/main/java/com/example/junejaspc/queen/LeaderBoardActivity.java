@@ -49,6 +49,7 @@ public static void change(){adapter.notifyDataSetChanged();}
         if (network != null && network.isConnected()) {
             Log.e("netz", 1 + "");
             LoaderManager loaderManager = getSupportLoaderManager();
+            al.clear();
             loaderManager.initLoader(k++, null, this).forceLoad();
 
             //loaderManager.initLoader(0, null, this).forceLoad();
