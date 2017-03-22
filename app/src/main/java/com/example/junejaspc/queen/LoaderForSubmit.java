@@ -3,7 +3,6 @@ package com.example.junejaspc.queen;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +51,7 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
             connection.setReadTimeout(15000);
             connection.setDoInput(true);
             connection.setDoOutput(true);
-            Log.e("joeygiving",data.getUsername());
+
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("username",data.getUsername())
                     .appendQueryParameter("level", String.valueOf(data.getLevel()))
@@ -71,7 +70,7 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
 
             inputstream=connection.getInputStream();
             response=readfromstream(inputstream);
-            Log.e("response",response);
+
             checkresponse();
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,7 +78,7 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
         return null;
     }
     public static String readfromstream(InputStream inputstream) throws IOException {
-        Log.e("netz","7");
+
         StringBuilder string=new StringBuilder();
         if(inputstream!=null) {
             InputStreamReader inputreader = new InputStreamReader(inputstream, Charset.forName("UTF-8"));

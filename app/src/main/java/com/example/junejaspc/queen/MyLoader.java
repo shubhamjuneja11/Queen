@@ -3,8 +3,6 @@ package com.example.junejaspc.queen;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,24 +39,22 @@ ArrayList<LeaderBoard_row>al;
         this.context=context;
         this.al=al;
         this.adapter=adapter;
-        Log.e("netz","4");
+
 
     }
 
     @Override
     public ArrayList<LeaderBoard_row> loadInBackground() {
-        try {Log.e("netz","5");
+        try {
             response=makerequest(new URL(url));
             getscores();
         } catch (IOException e) {
-            Log.e("errorz","2");
-            Log.e("errorz",e.getMessage());
             e.printStackTrace();
         }
         return al;
     }
     public static String makerequest(URL url1) throws IOException {
-        Log.e("netz","6");
+
         String jsonResponse="";
         InputStream inputstream=null;
         if(url1==null)
@@ -90,24 +86,17 @@ ArrayList<LeaderBoard_row>al;
         return jsonResponse;
     }
     private  void getscores(){
-        Log.e("netz","8");
-      //  ArrayList<LeaderBoard_row> al=new ArrayList<>();
-        try {Log.e("netz","10");
+
+        try {
             JSONObject jsonObject = new JSONObject(response);
-            Log.e("netz","11");
-            Log.e("netz",response);
             JSONArray array=jsonObject.getJSONArray(arrayname);
-            //JSONObject jsonObject1=jsonObject.getJSONObject(arrayname);
-            Log.e("netz","12");
+
             try {
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject jsonObject1 = array.getJSONObject(i);
                     String user = jsonObject1.getString(username);
                     int level = jsonObject1.getInt(MyLoader.level);
                     String time = jsonObject1.getString(MyLoader.time);
-                    Log.e("buzz", user);
-                    Log.e("buzz", level + "");
-                    Log.e("buzz", time);
                     int icon = jsonObject1.getInt("avatar");
                     LeaderBoard_row score = new LeaderBoard_row(user, level, time, icon);
                     al.add(score);
@@ -118,12 +107,11 @@ ArrayList<LeaderBoard_row>al;
            //LeaderBoardActivity.change();
         }
         catch(Exception e){
-            Log.e("netz",response);
-            Log.e("netz",e.getMessage());
+
         }
     }
     private static String readfromstream(InputStream inputstream) throws IOException {
-        Log.e("netz","7");
+
         StringBuilder string=new StringBuilder();
         if(inputstream!=null) {
             InputStreamReader inputreader = new InputStreamReader(inputstream, Charset.forName("UTF-8"));

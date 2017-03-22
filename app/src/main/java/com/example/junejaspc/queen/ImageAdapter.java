@@ -2,7 +2,6 @@ package com.example.junejaspc.queen;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -75,7 +74,7 @@ public class ImageAdapter extends BaseAdapter implements View.OnClickListener {
             else  imageView.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
         catch (Exception e){
-            Log.e("fuck","bushie");}
+          }
         return imageView;
     }
 

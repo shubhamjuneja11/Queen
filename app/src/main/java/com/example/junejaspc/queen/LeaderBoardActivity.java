@@ -4,24 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -47,7 +41,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
         ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo network = connectivity.getActiveNetworkInfo();
         if (network != null && network.isConnected()) {
-            Log.e("netz", 1 + "");
+
             LoaderManager loaderManager = getSupportLoaderManager();
             al.clear();
             adapter.notifyDataSetChanged();
@@ -81,7 +75,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
 
     @Override
     public Loader<ArrayList<LeaderBoard_row>> onCreateLoader(int id, Bundle args) {
-        Log.e("netz", 2 + "");
+
         return new MyLoader(this, url, al,adapter);
 
     }

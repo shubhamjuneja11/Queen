@@ -1,6 +1,5 @@
 package com.example.junejaspc.queen;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,8 +19,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -29,10 +26,10 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,7 +41,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.example.junejaspc.queen.LoaderForSubmit.readfromstream;
 
@@ -78,6 +74,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     SharedPreferences.Editor editor;
     private String url="http://geekyboy.16mb.com/saveusername.php";
     private URL myurl;
+    ProgressBar progress;
 
     @Override
     protected void onPause() {
@@ -85,32 +82,29 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         stop_tick_tock();
         editor.putLong("temptime",elapsedTime);
         editor.apply();
-        Log.e("zoya",elapsedTime+"");
         //game_started=false;
     }
 
     @Override
     protected void onResume() {
-        try {Log.e("popi","richard");
+        try {
             super.onResume();
             if(game_started) {
                 builder = new AlertDialog.Builder(this);
-                Log.e("popi", "resume");
+
                 View view = getLayoutInflater().inflate(R.layout.newdialog, null);
                 builder.setView(view);
                 dialog = builder.create();
                 dialog.setCancelable(false);
                 dialog.show();
-                Log.e("savedtime1",savedtime+"");
                 savedtime=sharedPreferences.getLong("temptime",savedtime);
-                Log.e("savedtime2",savedtime+"");
-                Log.e("zoya",savedtime+"");
+
             }
 
 
 
         }
-        catch (Exception e){Log.e("popi","chandler");}
+        catch (Exception e){}
     }
     public void startgame(View view){
         dialog.dismiss();
@@ -126,6 +120,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         editor =sharedPreferences.edit();
         game_started=true;
 
+
         try {
             myurl=new URL(url);
         } catch (MalformedURLException e) {
@@ -137,7 +132,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
             saved = getIntent().getBooleanExtra("saved", false);
             if(saved)
                 savedtime=sharedPreferences.getLong(colors[rowlimit-4]+savemilli,0);
-        Log.e("savedtime",savedtime+"");
+
         time = (TextView) findViewById(R.id.mytime);
         shapeDrawable = new GradientDrawable();
         shapeDrawable.setStroke(1, getResources().getColor(R.color.black));
@@ -156,7 +151,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         buttons_state = new boolean[rowlimit][rowlimit];
         decideFactor();
         boardsetup();
-        Log.e("popi","createdone");
+
         /*MobileAds.initialize(getApplicationContext(),"ca-app-pub-5750055305709604~2904023779");
         AdView mAdView = (AdView) findViewById(R.id.adView);
         //AdRequest adRequest = new AdRequest.Builder().build();
@@ -202,12 +197,12 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     }
 public void checksavedgame(){
         savedgame=sharedPreferences.getString(colors[rowlimit-4],"1");
-    Log.e("rollz",savedgame+"");
+
        if(!savedgame.equals("1"))
            resumegame();
 }
 public void resumegame(){
-    Log.e("rollz","s");
+
     try {
         int k = 0;
         char c[] = savedgame.toCharArray();
@@ -222,8 +217,7 @@ public void resumegame(){
         }
         total_queens=sharedPreferences.getInt(colors[rowlimit-4]+"queen",0);
     }
-    catch (Exception e){
-        Log.e("rolz","rockandroll");
+    catch (Exception e) {
     }
 }
     @Override
@@ -256,10 +250,10 @@ public void resumegame(){
             //buttons_state[i][j] = !buttons_state[i][j];
             check_status(i, j);
         } else {
-            Log.e("rollz","aao");
 
 
-            if (total_queens < rowlimit) {Log.e("rollz","mataao");
+
+            if (total_queens < rowlimit) {
                 total_queens++;
                 ((ImageButton) v).setImageResource(R.drawable.queen);
                 ((ImageButton) v).setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -271,22 +265,22 @@ public void resumegame(){
         }
     }
     public void decideButtonStatus(int i,int j,View v){
-        if (buttons_state[i][j]) {        Log.e("rollz","pppo");
+        if (buttons_state[i][j]) {
 
             if (i % 2 == 0 && j % 2 == 0 || i % 2 != 0 && j % 2 != 0)
-            { v.setBackgroundDrawable(shapeDrawable);        Log.e("rollz","ola");
+            { v.setBackgroundDrawable(shapeDrawable);
             }
-            else {v.setBackgroundDrawable(shape2);        Log.e("rollz","aaao");
+            else {v.setBackgroundDrawable(shape2);
             }
             ((ImageButton) v).setImageResource(0);
             total_queens--;
             buttons_state[i][j] = !buttons_state[i][j];
             check_status(i, j);
         } else {
-            Log.e("rollz","aao");
 
 
-            if (total_queens < rowlimit) {Log.e("rollz","mataao");
+
+            if (total_queens < rowlimit) {
                 total_queens++;
                 ((ImageButton) v).setImageResource(R.drawable.queen);
                 buttons_state[i][j] = !buttons_state[i][j];
@@ -357,21 +351,21 @@ public void resumegame(){
             for(j=0;j<rowlimit;j++)
                 if(buttons_state[i][j])s+="1";
                 else s+="0";
-        Log.e("bushi",s);
+
         boolean flag = true;
         int i, j;
-        Log.e("bam",rowlimit+"");
+
         outerloop:
         for (i = 0; i < rowlimit; i++) {
             for (j = 0; j < rowlimit; j++) {
                 if (buttons_state[i][j])
                     if (!mark_status(i, j)) {
-                        Log.e("bam", "raaz");
+
                         return false;
                         /*flag = false;
                         break outerloop;*/
                     } else {
-                        Log.e("bam", "bhole");
+
                     }
             }
         }
@@ -408,7 +402,7 @@ public void resumegame(){
             };
             startTimer.run();
         } catch (Exception e) {
-            Log.e("rolz","rockandroll");
+
             e.printStackTrace();
         }
     }
@@ -488,12 +482,10 @@ public void resumegame(){
 
     public void onleaderboard(View view) {
        dialog.dismiss();
-        Log.e("joey","1");
        if(check_user()) {
           putandgo();
        }
 
-        Log.e("joey","2");
     }
     public void putandgo(){
         putonBoard();
@@ -506,7 +498,7 @@ public void back(View view){
 }
 public void goback(){
     game_started=false;
-    try {Log.e("going","back");
+    try {
         if(dialog!=null)
         dialog.dismiss();
         Intent upIntent=NavUtils.getParentActivityIntent(this);;
@@ -520,12 +512,12 @@ public void goback(){
             NavUtils.navigateUpTo(this, upIntent);
         }
 
-    } catch (Exception e) {Log.e("going","no");
+    } catch (Exception e) {
     }
 }
     @Override
     public void onBackPressed() {
-        Log.e("zebra","a");
+
         stop_tick_tock();
         game_started=false;
    /* if(game_started){ Log.e("zebra","b");
@@ -534,7 +526,7 @@ public void goback(){
         return;
     }Log.e("zebra","c");*/
         if(!(total_queens==rowlimit&&check_completed())) {
-            Log.e("golden","crow");
+
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View view = getLayoutInflater().inflate(R.layout.dialog, null);
             builder.setView(view);
@@ -583,12 +575,11 @@ public void goback(){
         senddata();
     }
     public void senddata(){
-        Log.e("joey","fddd");
+
         ConnectivityManager connectivity=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo network=connectivity.getActiveNetworkInfo();
         if(network!=null&&network.isConnected())
-        {Log.e("joey","xxxxx");
-        Log.e("joey",user_name);
+        {
             LoaderManager loaderManager=getSupportLoaderManager();
             loaderManager.initLoader(1,null,this).forceLoad();
 
@@ -596,21 +587,22 @@ public void goback(){
         else Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
     }
     public boolean check_user(){
-        Log.e("joey","3");
+
         user_name=sharedPreferences.getString("username","");
-        Log.e("joey",user_name);
+
         if(!user_name.equals(""))
             return true;
-        else{Log.e("joey","4");
+        else{
             if(createusername())
                     return false;
 
         }
-        Log.e("joey","5");
+
         return false;
     }
     public boolean createusername() {
-        Log.e("joey","6");
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         view2 = getLayoutInflater().inflate(R.layout.usernamedialog, null);
 
@@ -618,6 +610,7 @@ public void goback(){
         gridview.setAdapter(new ImageAdapter(this));
 
         builder.setView(view2);
+        progress=(ProgressBar)view2.findViewById(R.id.progress);
         dialog = builder.create();
         dialog.setCancelable(false);
         dialog.show();
@@ -625,8 +618,8 @@ public void goback(){
     }
 
     public void submit(View view){
-        try {
-            Log.e("joey","7");
+        try {progress.setVisibility(View.VISIBLE);
+
             EditText user = (EditText) view2.findViewById(R.id.username);
             user_name = user.getText().toString();
             if(checkusername()) {
@@ -635,12 +628,12 @@ public void goback(){
                 NetworkInfo network = connectivity.getActiveNetworkInfo();
                 if (network != null && network.isConnected()) {
                     new MyAsyncClass().execute();
-                    Log.e("joey","8");
+
 
                 }
             }
         }
-        catch(Exception e){Log.e("joey","9");
+        catch(Exception e){
             e.printStackTrace();
         }
     }
@@ -655,14 +648,12 @@ public void goback(){
     }
     @Override
     public Loader<LeaderBoard_row> onCreateLoader(int id, Bundle args) {
-        try { Toast.makeText(this, "3", Toast.LENGTH_SHORT).show();
+        try {
             user_name=sharedPreferences.getString("username","user");
             mylevel=rowlimit-3;
             mytime=String.valueOf(elapsedTime);
             return new LoaderForSubmit(this,new LeaderBoard_row(user_name,mylevel,mytime,avatar));
         } catch (MalformedURLException e) {
-            Toast.makeText(this, "4", Toast.LENGTH_SHORT).show();
-            Log.e("rolz","rockandroll");
             e.printStackTrace();
             return null;
         }
@@ -685,12 +676,14 @@ public void goback(){
         @Override
         protected Boolean doInBackground(Void... params) {
             if(connect(myurl))
-            { Log.e("chima", "10");return true;}
+            {return true;}
             else return false;
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
+
+            progress.setVisibility(View.GONE);
             super.onPostExecute(aBoolean);
             if(aBoolean)
             {
@@ -700,17 +693,17 @@ public void goback(){
             else done=false;
             if (done)
                 Toast.makeText(ChessBoard.this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
-            else {Log.e("joey","bob");
+            else {
                 dialog.dismiss();
                 editor.putString("username",user_name);
                 editor.putInt("avatar",avatar);
                 editor.apply();
-                Log.e("joey",user_name);
+
                 Toast.makeText(ChessBoard.this, "Username created", Toast.LENGTH_SHORT).show();
                 putandgo();
 
             }
-            Log.e("chima", done+"");
+
 
         }
     }
@@ -745,27 +738,27 @@ public void goback(){
         response=readfromstream(inputstream);
 
         if(checkresponse()) {
-            Log.e("chima", "3");
+
             return true;
         }
-        else { Log.e("chima", "4");return false;}
+        else { return false;}
     } catch (IOException e) {
-        Log.e("bvp",e.getMessage());
+
         e.printStackTrace();
     }
     return false;
     }
     public boolean checkresponse(){
-        try {Log.e("response",response);
+        try {
             JSONObject object=new JSONObject(response);
             int m=object.getInt("success");
-            Log.e("chima","1");
-            if(m==0){            Log.e("chima","2");
+
+            if(m==0){
                 return false;}
             else return true;
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.e("bvp",e.getMessage());
+
         }
         return false;
     }
