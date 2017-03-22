@@ -24,9 +24,7 @@
                 android:id="@+id/bgheader"
                 android:layout_width="match_parent"
                 android:src="@drawable/checkmate"
-
                 android:layout_height="match_parent"
-
                 android:scaleType="fitCenter"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="pin" />

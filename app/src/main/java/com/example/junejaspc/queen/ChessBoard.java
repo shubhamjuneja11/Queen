@@ -118,6 +118,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
+        getSupportActionBar().setTitle("ChessBoard");
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         editor =sharedPreferences.edit();
         game_started=true;

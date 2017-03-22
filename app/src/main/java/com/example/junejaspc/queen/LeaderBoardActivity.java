@@ -36,7 +36,6 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     long a, b;
     public static int level = 1;
     private int selected_level=1;
-    int k=0;
     SwipeRefreshLayout swipe;
     @Override
     protected void onResume() {
@@ -52,14 +51,9 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
             LoaderManager loaderManager = getSupportLoaderManager();
             al.clear();
             loaderManager.restartLoader(0,null,this).forceLoad();
-            //loaderManager.initLoader(k++, null, this).forceLoad();
-
-            //loaderManager.initLoader(0, null, this).forceLoad();
-            //loaderManager.restartLoader(0,null,this).forceLoad();
-
         } else {
             Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
-
+            swipe.setRefreshing(false);
         }
 
     }
@@ -68,6 +62,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
+        getSupportActionBar().setTitle("LeaderBoard");
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         swipe=(SwipeRefreshLayout)findViewById(R.id.swipe);
         al = new ArrayList<>();
