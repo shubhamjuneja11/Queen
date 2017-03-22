@@ -32,7 +32,6 @@
             android:text="120"
             android:gravity="center"
             android:textStyle="bold"
-            android:src="@drawable/steve"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true">
         </TextView>
@@ -53,7 +52,6 @@
             android:layout_height="60dp"
             android:layout_width="match_parent"
             android:id="@+id/usericon"
-            android:src="@drawable/steve"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true">
         </ImageView>

@@ -63,7 +63,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/aboutgame"
+        android:text="@string/aboutleader"
         android:textColor="@color/black"
         android:textSize="20dp"
         />

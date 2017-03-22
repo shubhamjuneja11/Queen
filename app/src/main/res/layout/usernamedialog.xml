@@ -59,7 +59,7 @@
             android:padding="40dp"
             android:id="@+id/gridview"
             android:layout_below="@+id/textView3"
-            android:layout_height="wrap_content">
+            android:layout_height="200dp">
         </GridView>
     <RelativeLayout
         android:layout_below="@+id/gridview"

@@ -50,6 +50,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
             Log.e("netz", 1 + "");
             LoaderManager loaderManager = getSupportLoaderManager();
             al.clear();
+            adapter.notifyDataSetChanged();
             loaderManager.restartLoader(0,null,this).forceLoad();
         } else {
             Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
@@ -98,10 +99,10 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
         });
         adapter.notifyDataSetChanged();
         swipe.setRefreshing(false);
-        try {
+       /* try {
             if (adapter.my_rank != -1)
                 recyclerView.scrollToPosition(adapter.my_rank);
-        }catch (Exception e){}
+        }catch (Exception e){}*/
     }
 
     @Override
@@ -173,6 +174,7 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
             level=selected_level;
         }
         al.clear();
+        adapter.notifyDataSetChanged();
         load_data();
     }
 

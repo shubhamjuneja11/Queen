@@ -18,8 +18,8 @@ public class ImageAdapter extends BaseAdapter implements View.OnClickListener {
     private Context mContext;
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
-     public static int selected_avatar=0,avatar_id[]=new int[6];
-    private boolean avatar_status[]=new boolean[6];
+     public static int selected_avatar=0,avatar_id[]=new int[15];
+    private boolean avatar_status[]=new boolean[15];
     public static int generateViewId() {
         for (;;) {
             final int result = sNextGeneratedId.get();
@@ -84,6 +84,11 @@ public class ImageAdapter extends BaseAdapter implements View.OnClickListener {
             R.drawable.avatar1, R.drawable.avatar2,
             R.drawable.avatar3, R.drawable.avatar4,
             R.drawable.avatar5, R.drawable.avatar6,
+            R.drawable.avatar7,R.drawable.avatar8,
+            R.drawable.avatar9,R.drawable.avatar10,
+            R.drawable.avatar11,R.drawable.avatar12,
+            R.drawable.avatar13,R.drawable.avatar14,
+            R.drawable.avatar15
     };
 
     @Override
@@ -101,7 +106,26 @@ public class ImageAdapter extends BaseAdapter implements View.OnClickListener {
             selected_avatar=4;
         else if(a==avatar_id[5])
             selected_avatar=5;
-        for(int i=0;i<6;i++)avatar_status[i]=false;
+        else if(a==avatar_id[6])
+            selected_avatar=6;
+        else if(a==avatar_id[7])
+            selected_avatar=7;
+        else if(a==avatar_id[8])
+            selected_avatar=8;
+        else if(a==avatar_id[9])
+            selected_avatar=9;
+        else if(a==avatar_id[10])
+            selected_avatar=10;
+        else if(a==avatar_id[11])
+            selected_avatar=11;
+        else if(a==avatar_id[12])
+            selected_avatar=12;
+        else if(a==avatar_id[13])
+            selected_avatar=13;
+        else if(a==avatar_id[14])
+            selected_avatar=14;
+
+        for(int i=0;i<15;i++)avatar_status[i]=false;
         avatar_status[selected_avatar]=true;
         notifyDataSetChanged();
     }

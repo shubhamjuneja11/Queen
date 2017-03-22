@@ -37,7 +37,8 @@ boolean exit=false;
        startActivity(intent);
    }
    public void contactus(View view){
-
+        Intent intent=new Intent(this,ContactUs.class);
+       startActivity(intent);
    }
 
     @Override

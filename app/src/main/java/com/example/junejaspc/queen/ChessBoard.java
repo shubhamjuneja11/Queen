@@ -593,7 +593,7 @@ public void goback(){
             loaderManager.initLoader(1,null,this).forceLoad();
 
         }
-        else Log.e("joey","popat");
+        else Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
     }
     public boolean check_user(){
         Log.e("joey","3");
