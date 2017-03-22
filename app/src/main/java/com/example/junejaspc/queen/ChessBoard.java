@@ -101,9 +101,12 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
                 dialog = builder.create();
                 dialog.setCancelable(false);
                 dialog.show();
-                savedtime=sharedPreferences.getLong("temptime",0);
+                Log.e("savedtime1",savedtime+"");
+                savedtime=sharedPreferences.getLong("temptime",savedtime);
+                Log.e("savedtime2",savedtime+"");
                 Log.e("zoya",savedtime+"");
             }
+
 
 
         }
@@ -132,8 +135,9 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         rowlimit = getIntent().getIntExtra("count", 4);
         //savedtime=0;
             saved = getIntent().getBooleanExtra("saved", false);
-        if(saved)
-            savedtime = sharedPreferences.getLong(colors[rowlimit - 4] + savemilli, 0);
+            if(saved)
+                savedtime=sharedPreferences.getLong(colors[rowlimit-4]+savemilli,0);
+        Log.e("savedtime",savedtime+"");
         time = (TextView) findViewById(R.id.mytime);
         shapeDrawable = new GradientDrawable();
         shapeDrawable.setStroke(1, getResources().getColor(R.color.black));
@@ -501,6 +505,7 @@ public void back(View view){
    goback();
 }
 public void goback(){
+    game_started=false;
     try {Log.e("going","back");
         if(dialog!=null)
         dialog.dismiss();
@@ -522,6 +527,7 @@ public void goback(){
     public void onBackPressed() {
         Log.e("zebra","a");
         stop_tick_tock();
+        game_started=false;
    /* if(game_started){ Log.e("zebra","b");
         dialog.dismiss();
         super.onBackPressed();
@@ -560,15 +566,18 @@ public void goback(){
         editor.putBoolean(String.valueOf(rowlimit-3),true);
         editor.putLong(colors[rowlimit-4]+savemilli,elapsedTime);
         editor.apply();
+        game_started=false;
         super.onBackPressed();
     }
 
     public void nosave(View view) {
         dialog.dismiss();
+        game_started=false;
         super.onBackPressed();
     }
 
     public void putonBoard() {
+        game_started=false;
         mytime = time.getText().toString();
         mylevel = rowlimit-3;
         senddata();
@@ -759,5 +768,12 @@ public void goback(){
             Log.e("bvp",e.getMessage());
         }
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        editor.remove("temptime");
+        editor.apply();
     }
 }

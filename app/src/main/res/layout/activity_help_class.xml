@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginLeft="10dp"
     tools:context="com.example.junejaspc.queen.HelpClass">
@@ -25,9 +28,9 @@
         android:textSize="20dp"
         />
     <ImageView
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+       android:layout_marginTop="20dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:src="@drawable/queenpos"
         />
     <TextView
@@ -36,14 +39,14 @@
         android:layout_height="wrap_content"
         android:text="How to Play?"
         android:textColor="@color/black"
+        android:textStyle="bold"
         android:textSize="30dp"
         />
     <TextView
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="How to Play?"
-        android:textStyle="bold"
+        android:text="@string/aboutgame"
         android:textColor="@color/black"
         android:textSize="20dp"
         />
@@ -51,16 +54,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/aboutgame"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="30dp"
-        />
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What is LeaderBoard"
+        android:text="What is LeaderBoard?"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="30dp"
@@ -70,9 +64,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/aboutgame"
-        android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="20dp"
         />
-
 </LinearLayout>
+    </ScrollView>

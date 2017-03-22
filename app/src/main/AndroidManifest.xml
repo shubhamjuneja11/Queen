@@ -26,10 +26,11 @@
             android:name=".LevelActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".LeaderBoardActivity"
-            android:parentActivityName=".MainActivity"
-            />
+        <activity
+            android:name=".LeaderBoardActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".HelpClass" />
+        <activity android:name=".ContactUs"></activity>
     </application>
 
 </manifest>
