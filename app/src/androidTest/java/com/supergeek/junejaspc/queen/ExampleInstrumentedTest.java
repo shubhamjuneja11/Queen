@@ -1,4 +1,4 @@
-package com.example.junejaspc.queen;
+package com.supergeek.junejaspc.queen;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

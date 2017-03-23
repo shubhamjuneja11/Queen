@@ -1,4 +1,4 @@
-package com.example.junejaspc.queen;
+package com.supergeek.junejaspc.queen;
 
 import android.content.Context;
 import android.content.Intent;
@@ -42,7 +42,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.example.junejaspc.queen.LoaderForSubmit.readfromstream;
+import static com.supergeek.junejaspc.queen.LoaderForSubmit.readfromstream;
 
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<LeaderBoard_row> {
     GridLayout gridLayout;

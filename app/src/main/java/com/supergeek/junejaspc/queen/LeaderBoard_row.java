@@ -1,4 +1,4 @@
-package com.example.junejaspc.queen;
+package com.supergeek.junejaspc.queen;
 
 /**
  * Created by junejaspc on 3/13/2017.

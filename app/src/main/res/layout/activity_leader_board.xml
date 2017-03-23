@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_black"
-    tools:context="com.example.junejaspc.queen.LeaderBoardActivity">
+    tools:context="com.supergeek.junejaspc.queen.LeaderBoardActivity">
 <android.support.v4.widget.SwipeRefreshLayout
     android:layout_width="match_parent"
     android:id="@+id/swipe"
