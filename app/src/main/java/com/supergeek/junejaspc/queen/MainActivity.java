@@ -34,7 +34,12 @@ boolean exit=false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAdView = (AdView) findViewById(R.id.adView);
+        /*AdRequest adRequest = new AdRequest.Builder()
+                .build();*/
         AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("57580B9311901ECCFBBED8BC41E8E74F")
                 .build();
         mAdView.loadAd(adRequest);
     }

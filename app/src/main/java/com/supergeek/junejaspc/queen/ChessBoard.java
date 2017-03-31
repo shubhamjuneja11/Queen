@@ -30,8 +30,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +53,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     GridLayout gridLayout;
     ImageButton button_set[][];
     AlertDialog.Builder builder;
+    InterstitialAd mInterstitialAd;
     int i, height, width, totalbuttons, rowlimit, j, total_queens;
     boolean decide,game_started;
     TextView time;
@@ -168,7 +171,12 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         buttons_state = new boolean[rowlimit][rowlimit];
 /*****************************************************************************************/
         mAdView = (AdView) findViewById(R.id.adView);
+        /*AdRequest adRequest = new AdRequest.Builder()
+                .build();*/
         AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("57580B9311901ECCFBBED8BC41E8E74F")
                 .build();
         mAdView.loadAd(adRequest);
 
@@ -413,9 +421,45 @@ public void resumegame(){
             dialog.setCancelable(false);
             dialog.show();
             game_started=false;
+
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId(getString(R.string.my_add_2));
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    // Check the LogCat to get your test device ID
+                    .addTestDevice("57580B9311901ECCFBBED8BC41E8E74F")
+                    .build();
+
+        /*AdRequest adRequest = new AdRequest.Builder()
+                .build();*/
+
+            // Load ads into Interstitial Ads
+            mInterstitialAd.loadAd(adRequest);
+
+            mInterstitialAd.setAdListener(new AdListener() {
+                public void onAdLoaded() {
+                    showInterstitial();
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
             return true;
         }
         return false;
+    }
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
     }
 
     public void tick_tock() {

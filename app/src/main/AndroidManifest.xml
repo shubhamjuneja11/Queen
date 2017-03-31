@@ -9,7 +9,6 @@
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -30,7 +29,7 @@
             android:name=".LeaderBoardActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".HelpClass" />
-        <activity android:name=".ContactUs"></activity>
+        <activity android:name=".ContactUs" />
     </application>
 
 </manifest>
