@@ -7,12 +7,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 public class MainActivity extends AppCompatActivity {
 boolean exit=false;
-
+    private AdView mAdView;
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
     @Override
     protected void onResume() {
         super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
         exit=false;
     }
 
@@ -20,6 +33,10 @@ boolean exit=false;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
     }
     public void newgame(View view){
         Intent intent=new Intent(this,LevelActivity.class);
@@ -59,5 +76,12 @@ boolean exit=false;
             super.onBackPressed();
         }
 
+    }
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 }

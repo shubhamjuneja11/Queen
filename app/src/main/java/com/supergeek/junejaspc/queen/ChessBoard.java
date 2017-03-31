@@ -30,6 +30,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,6 +78,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     private String url="http://geekyboy.16mb.com/saveusername.php";
     private URL myurl;
     ProgressBar progress;
+    private AdView mAdView,mAdView2;
 
     @Override
     protected void onPause() {
@@ -82,6 +86,13 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         stop_tick_tock();
         editor.putLong("temptime",elapsedTime);
         editor.apply();
+        if (mAdView != null) {
+            mAdView.pause();
+
+        }
+        if (mAdView2 != null) {
+            mAdView2.pause();
+        }
         //game_started=false;
     }
 
@@ -89,6 +100,12 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     protected void onResume() {
         try {
             super.onResume();
+            if (mAdView != null) {
+                mAdView.resume();
+            }
+            if (mAdView2 != null) {
+                mAdView2.resume();
+            }
             if(game_started) {
                 builder = new AlertDialog.Builder(this);
 
@@ -149,6 +166,18 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         decide = true;
         total_queens = 0;
         buttons_state = new boolean[rowlimit][rowlimit];
+/*****************************************************************************************/
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
+
+        mAdView2 = (AdView) findViewById(R.id.adView2);
+        AdRequest adRequest2 = new AdRequest.Builder()
+                .build();
+        mAdView2.loadAd(adRequest2);
+
+/********************************************************************************************/
         decideFactor();
         boardsetup();
 
@@ -768,5 +797,11 @@ public void goback(){
         super.onDestroy();
         editor.remove("temptime");
         editor.apply();
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        if (mAdView2 != null) {
+            mAdView2.destroy();
+        }
     }
 }
