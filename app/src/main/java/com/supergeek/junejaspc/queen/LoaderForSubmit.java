@@ -28,11 +28,12 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
     LeaderBoard_row data;
     private static String arrayname="success";
     String response;
-    private String url1="http://geekyboy.16mb.com/savescore.php";
+    private String url1;
     URL url;
     public LoaderForSubmit(Context context,LeaderBoard_row data) throws MalformedURLException {
         super(context);
         this.data=data;
+        url1=context.getResources().getString(R.string.saveuser);
        url=new URL(url1);
 
     }

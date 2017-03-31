@@ -18,12 +18,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 public class LeaderBoardActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<LeaderBoard_row>>,SwipeRefreshLayout.OnRefreshListener {
-    private String url = "http://geekyboy.16mb.com/leaderboard.php";
+    private String url = getResources().getString(R.string.leaderboard);
     RecyclerView recyclerView;
      static LeaderBoard_Adapter adapter;
     ArrayList<LeaderBoard_row> al;
@@ -31,9 +34,20 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     public static int level = 1;
     private int selected_level=1;
     SwipeRefreshLayout swipe;
+    private AdView mAdView;
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
     @Override
     protected void onResume() {
         super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
         load_data();
     }
     public void load_data() {
@@ -58,6 +72,12 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
         getSupportActionBar().setTitle("LeaderBoard");
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("57580B9311901ECCFBBED8BC41E8E74F")
+                .build();
+        mAdView.loadAd(adRequest);
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         swipe=(SwipeRefreshLayout)findViewById(R.id.swipe);
         al = new ArrayList<>();
@@ -68,6 +88,10 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         selected_level=level = getIntent().getIntExtra("level", 1);
         swipe.setOnRefreshListener(this);
+        mAdView = (AdView) findViewById(R.id.adView);
+        /*AdRequest adRequest = new AdRequest.Builder()
+                .build();*/
+
 
 
 
@@ -190,5 +214,12 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     @Override
     public void onRefresh() {
         reloadData();
+    }
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 }

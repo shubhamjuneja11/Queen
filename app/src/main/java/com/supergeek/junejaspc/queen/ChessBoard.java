@@ -78,7 +78,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     public static String savemilli="milli",response;
     private long savedtime;
     SharedPreferences.Editor editor;
-    private String url="http://geekyboy.16mb.com/saveusername.php";
+    private String url=getResources().getString(R.string.saveuser);
     private URL myurl;
     ProgressBar progress;
     private AdView mAdView,mAdView2;
