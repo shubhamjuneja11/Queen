@@ -9,7 +9,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginLeft="10dp"
-    tools:context="com.supergeek.junejaspc.queen.HelpClass">
+    tools:context="com.supergeek.junejaspc.nqueens.HelpClass">
 <TextView
     android:layout_marginTop="10dp"
     android:layout_width="wrap_content"

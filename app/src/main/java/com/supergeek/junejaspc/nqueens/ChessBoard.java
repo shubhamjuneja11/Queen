@@ -1,4 +1,4 @@
-package com.supergeek.junejaspc.queen;
+package com.supergeek.junejaspc.nqueens;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,10 +16,10 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -48,7 +48,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.supergeek.junejaspc.queen.LoaderForSubmit.readfromstream;
+import static com.supergeek.junejaspc.nqueens.LoaderForSubmit.readfromstream;
 
 public class ChessBoard extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<LeaderBoard_row> {
     GridLayout gridLayout;
@@ -136,8 +136,14 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
-        url=getResources().getString(R.string.saveuser);
+        url="http://geekyboy.16mb.com/saveusername.php";
         getSupportActionBar().setTitle("ChessBoard");
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(false); // disable the button
+            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+        }
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         editor =sharedPreferences.edit();
         game_started=true;
@@ -173,12 +179,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         buttons_state = new boolean[rowlimit][rowlimit];
 /*****************************************************************************************/
         mAdView = (AdView) findViewById(R.id.adView);
-        /*AdRequest adRequest = new AdRequest.Builder()
-                .build();*/
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("57580B9311901ECCFBBED8BC41E8E74F")
                 .build();
         mAdView.loadAd(adRequest);
 
@@ -190,16 +191,6 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
 /********************************************************************************************/
         decideFactor();
         boardsetup();
-
-        /*MobileAds.initialize(getApplicationContext(),"ca-app-pub-5750055305709604~2904023779");
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        //AdRequest adRequest = new AdRequest.Builder().build();
-        AdRequest request =
-                new AdRequest.Builder()
-                .addTestDevice(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
-                        .build();
-
-        mAdView.loadAd(request);*/
     }
 
     public void decideFactor() {
@@ -424,14 +415,8 @@ public void resumegame(){
             dialog.show();
             game_started=false;
 
-            /*mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId(getString(R.string.my_add_2));
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                    // Check the LogCat to get your test device ID
-                    .addTestDevice("57580B9311901ECCFBBED8BC41E8E74F")
-                    .build();
-
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-5750055305709604/4691384174");
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
 
@@ -442,7 +427,7 @@ public void resumegame(){
                 public void onAdLoaded() {
                     showInterstitial();
                 }
-            });*/
+            });
 
 
 
@@ -564,9 +549,9 @@ public void resumegame(){
     }
     public void putandgo(){
         putonBoard();
-        /*Intent intent=new Intent(ChessBoard.this,LeaderBoardActivity.class);
+        Intent intent=new Intent(ChessBoard.this,LeaderBoardActivity.class);
         intent.putExtra("level",rowlimit-3);
-        startActivity(intent);*/
+        startActivity(intent);
     }
 public void back(View view){
    goback();
@@ -595,11 +580,6 @@ public void goback(){
 
         stop_tick_tock();
         game_started=false;
-   /* if(game_started){ Log.e("zebra","b");
-        dialog.dismiss();
-        super.onBackPressed();
-        return;
-    }Log.e("zebra","c");*/
         if(!(total_queens==rowlimit&&check_completed())) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -662,7 +642,7 @@ public void goback(){
             catch (Exception e){}
 
         }
-        else Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
+       // else Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
     }
     public boolean check_user(){
 
@@ -726,13 +706,11 @@ public void goback(){
     public Loader<LeaderBoard_row> onCreateLoader(int id, Bundle args) {
         try {
             user_name=sharedPreferences.getString("username","user");
-            Log.e("bhimname",user_name);
             mylevel=rowlimit-3;
             mytime=String.valueOf(elapsedTime);
             return new LoaderForSubmit(this,new LeaderBoard_row(user_name,mylevel,mytime,avatar));
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            Log.e("bhimerror",e.getMessage());
             return null;
         }
     }
@@ -757,27 +735,26 @@ public void goback(){
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Log.e("bhim","1");
             if(connect(myurl))
-            { Log.e("bhim","2");return true;}
-            else { Log.e("bhim","3");return false;}
+            { return true;}
+            else {return false;}
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            Log.e("bhim","4");
+
             progress.setVisibility(View.GONE);
             super.onPostExecute(aBoolean);
             if(aBoolean)
-            { Log.e("bhim","5");
+            {
                 done=true;
 
             }
             else done=false;
-            Log.e("bhim","7");
+
             if (done)
                 Toast.makeText(ChessBoard.this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
-            else { Log.e("bhim","6");
+            else {
                 dialog.dismiss();
                 editor.putString("username",user_name);
                 editor.putInt("avatar",avatar);
@@ -792,7 +769,7 @@ public void goback(){
         }
     }
     public boolean connect(URL url){
-    try{ Log.e("bhim","8");
+    try{
         InputStream inputstream=null;
         HttpURLConnection connection=null;
         connection=(HttpURLConnection)url.openConnection();
@@ -817,34 +794,33 @@ public void goback(){
         os.close();
 
         connection.connect();
-        Log.e("bhim","9");
+
         inputstream=connection.getInputStream();
         response=readfromstream(inputstream);
 
         if(checkresponse()) {
-            Log.e("bhim","10");
+
             return true;
         }
-        else {  Log.e("bhim","11");return false;}
+        else { return false;}
     } catch (IOException e) {
-        Log.e("bhim","12");
         e.printStackTrace();
     }
     return false;
     }
     public boolean checkresponse(){
-        try { Log.e("bhim","3");
+        try {
             JSONObject object=new JSONObject(response);
-            Log.e("bhimresponse",object.toString());
+
             int m=object.getInt("success");
 
-            if(m==1){ Log.e("bhim","14");
+            if(m==1){
                 return false;}
-            else{  Log.e("bhim","16");return true;}
-        } catch (JSONException e) { Log.e("bhim","15");
+            else{  return true;}
+        } catch (JSONException e) {
             e.printStackTrace();
 
-        } Log.e("bhim","17");
+        }
         return false;
     }
 

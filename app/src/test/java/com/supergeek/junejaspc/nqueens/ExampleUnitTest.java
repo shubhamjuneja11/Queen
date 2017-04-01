@@ -1,4 +1,4 @@
-package com.supergeek.junejaspc.queen;
+package com.supergeek.junejaspc.nqueens;
 
 import org.junit.Test;
 

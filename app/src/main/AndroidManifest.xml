@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.supergeek.junejaspc.queen">
-
+    package="com.supergeek.junejaspc.nqueens">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -11,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.supergeek.junejaspc.nqueens.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,17 +18,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChessBoard"
-            android:parentActivityName=".LeaderBoardActivity" />
+            android:name="com.supergeek.junejaspc.nqueens.ChessBoard"
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.supergeek.junejaspc.nqueens.LeaderBoardActivity" />
         <activity
-            android:name=".LevelActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.supergeek.junejaspc.nqueens.LevelActivity"
+            android:parentActivityName="com.supergeek.junejaspc.nqueens.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".LeaderBoardActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".HelpClass" />
-        <activity android:name=".ContactUs" />
+            android:name="com.supergeek.junejaspc.nqueens.LeaderBoardActivity"
+            android:parentActivityName="com.supergeek.junejaspc.nqueens.MainActivity" />
+        <activity android:name="com.supergeek.junejaspc.nqueens.HelpClass" />
+        <activity android:name="com.supergeek.junejaspc.nqueens.ContactUs" />
     </application>
 
 </manifest>

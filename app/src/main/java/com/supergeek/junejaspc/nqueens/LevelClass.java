@@ -1,4 +1,4 @@
-package com.supergeek.junejaspc.queen;
+package com.supergeek.junejaspc.nqueens;
 
 /**
  * Created by junejaspc on 3/7/2017.

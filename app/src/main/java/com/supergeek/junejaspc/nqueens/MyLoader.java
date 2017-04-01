@@ -1,4 +1,4 @@
-package com.supergeek.junejaspc.queen;
+package com.supergeek.junejaspc.nqueens;
 
 import android.content.Context;
 import android.net.Uri;

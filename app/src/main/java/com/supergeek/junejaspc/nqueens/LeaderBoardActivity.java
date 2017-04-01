@@ -1,4 +1,4 @@
-package com.supergeek.junejaspc.queen;
+package com.supergeek.junejaspc.nqueens;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,13 +72,16 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(false); // disable the button
+            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+        }
         mAdView = (AdView) findViewById(R.id.adView);
-        url = getResources().getString(R.string.leaderboard);
+        url = "http://geekyboy.16mb.com/leaderboard.php";
         getSupportActionBar().setTitle("LeaderBoard");
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("57580B9311901ECCFBBED8BC41E8E74F")
                 .build();
         mAdView.loadAd(adRequest);
         recyclerView = (RecyclerView) findViewById(R.id.recycler);

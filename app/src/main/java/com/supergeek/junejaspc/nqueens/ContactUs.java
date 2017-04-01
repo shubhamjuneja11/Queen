@@ -1,4 +1,4 @@
-package com.supergeek.junejaspc.queen;
+package com.supergeek.junejaspc.nqueens;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

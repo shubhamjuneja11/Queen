@@ -1,4 +1,4 @@
-package com.supergeek.junejaspc.queen;
+package com.supergeek.junejaspc.nqueens;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static com.supergeek.junejaspc.queen.LevelActivity.completed;
-import static com.supergeek.junejaspc.queen.LevelActivity.decide;
+import static com.supergeek.junejaspc.nqueens.LevelActivity.completed;
+import static com.supergeek.junejaspc.nqueens.LevelActivity.decide;
 
 /**
  * Created by junejaspc on 3/7/2017.

@@ -78,7 +78,7 @@
         ads:adSize="BANNER"
         android:layout_gravity="bottom"
         android:layout_marginBottom="5dp"
-        ads:adUnitId="@string/my_add">
+        ads:adUnitId="ca-app-pub-5750055305709604/3214650978">
     </com.google.android.gms.ads.AdView>
     </LinearLayout>
 </LinearLayout>

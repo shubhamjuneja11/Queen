@@ -1,13 +1,8 @@
-package com.supergeek.junejaspc.queen;
+package com.supergeek.junejaspc.nqueens;
 
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,14 +22,13 @@ import java.nio.charset.Charset;
 
 public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
     LeaderBoard_row data;
-    private static String arrayname="success";
     String response;
     private String url1;
     URL url;
     public LoaderForSubmit(Context context,LeaderBoard_row data) throws MalformedURLException {
         super(context);
         this.data=data;
-        url1=context.getResources().getString(R.string.savescore);
+        url1="http://geekyboy.16mb.com/savescore.php";
        url=new URL(url1);
 
     }
@@ -72,8 +66,6 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
 
             inputstream=connection.getInputStream();
             response=readfromstream(inputstream);
-
-            checkresponse();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,17 +84,5 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
             }
         }
         return string.toString();
-    }
-    public void checkresponse(){
-        Log.e("bhimsh11122",response);
-        /*try { Log.e("bhimsh11122",response);
-          //  JSONObject object=new JSONObject(response);
-           // JSONArray array=object.getJSONArray(arrayname);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("bhimsh",e.getMessage());
-        }*/
-
     }
 }
