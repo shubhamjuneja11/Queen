@@ -19,6 +19,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -78,7 +79,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     public static String savemilli="milli",response;
     private long savedtime;
     SharedPreferences.Editor editor;
-    private String url=getResources().getString(R.string.saveuser);
+    private String url;
     private URL myurl;
     ProgressBar progress;
     private AdView mAdView,mAdView2;
@@ -135,6 +136,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess_board);
+        url=getResources().getString(R.string.saveuser);
         getSupportActionBar().setTitle("ChessBoard");
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         editor =sharedPreferences.edit();
@@ -422,7 +424,7 @@ public void resumegame(){
             dialog.show();
             game_started=false;
 
-            mInterstitialAd = new InterstitialAd(this);
+            /*mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId(getString(R.string.my_add_2));
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
@@ -430,8 +432,8 @@ public void resumegame(){
                     .addTestDevice("57580B9311901ECCFBBED8BC41E8E74F")
                     .build();
 
-        /*AdRequest adRequest = new AdRequest.Builder()
-                .build();*/
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
 
             // Load ads into Interstitial Ads
             mInterstitialAd.loadAd(adRequest);
@@ -440,7 +442,7 @@ public void resumegame(){
                 public void onAdLoaded() {
                     showInterstitial();
                 }
-            });
+            });*/
 
 
 
@@ -562,9 +564,9 @@ public void resumegame(){
     }
     public void putandgo(){
         putonBoard();
-        Intent intent=new Intent(ChessBoard.this,LeaderBoardActivity.class);
+        /*Intent intent=new Intent(ChessBoard.this,LeaderBoardActivity.class);
         intent.putExtra("level",rowlimit-3);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 public void back(View view){
    goback();
@@ -653,8 +655,11 @@ public void goback(){
         NetworkInfo network=connectivity.getActiveNetworkInfo();
         if(network!=null&&network.isConnected())
         {
-            LoaderManager loaderManager=getSupportLoaderManager();
-            loaderManager.initLoader(1,null,this).forceLoad();
+            try {
+                LoaderManager loaderManager = getSupportLoaderManager();
+                loaderManager.initLoader(1, null, this).forceLoad();
+            }
+            catch (Exception e){}
 
         }
         else Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
@@ -701,8 +706,6 @@ public void goback(){
                 NetworkInfo network = connectivity.getActiveNetworkInfo();
                 if (network != null && network.isConnected()) {
                     new MyAsyncClass().execute();
-
-
                 }
             }
         }
@@ -723,11 +726,13 @@ public void goback(){
     public Loader<LeaderBoard_row> onCreateLoader(int id, Bundle args) {
         try {
             user_name=sharedPreferences.getString("username","user");
+            Log.e("bhimname",user_name);
             mylevel=rowlimit-3;
             mytime=String.valueOf(elapsedTime);
             return new LoaderForSubmit(this,new LeaderBoard_row(user_name,mylevel,mytime,avatar));
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            Log.e("bhimerror",e.getMessage());
             return null;
         }
     }
@@ -745,28 +750,34 @@ public void goback(){
 
     private class MyAsyncClass extends AsyncTask<Void,Void,Boolean>{
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            Log.e("bhim","1");
             if(connect(myurl))
-            {return true;}
-            else return false;
+            { Log.e("bhim","2");return true;}
+            else { Log.e("bhim","3");return false;}
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-
+            Log.e("bhim","4");
             progress.setVisibility(View.GONE);
             super.onPostExecute(aBoolean);
             if(aBoolean)
-            {
+            { Log.e("bhim","5");
                 done=true;
 
             }
             else done=false;
+            Log.e("bhim","7");
             if (done)
                 Toast.makeText(ChessBoard.this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
-            else {
+            else { Log.e("bhim","6");
                 dialog.dismiss();
                 editor.putString("username",user_name);
                 editor.putInt("avatar",avatar);
@@ -781,7 +792,7 @@ public void goback(){
         }
     }
     public boolean connect(URL url){
-    try{
+    try{ Log.e("bhim","8");
         InputStream inputstream=null;
         HttpURLConnection connection=null;
         connection=(HttpURLConnection)url.openConnection();
@@ -806,33 +817,34 @@ public void goback(){
         os.close();
 
         connection.connect();
-
+        Log.e("bhim","9");
         inputstream=connection.getInputStream();
         response=readfromstream(inputstream);
 
         if(checkresponse()) {
-
+            Log.e("bhim","10");
             return true;
         }
-        else { return false;}
+        else {  Log.e("bhim","11");return false;}
     } catch (IOException e) {
-
+        Log.e("bhim","12");
         e.printStackTrace();
     }
     return false;
     }
     public boolean checkresponse(){
-        try {
+        try { Log.e("bhim","3");
             JSONObject object=new JSONObject(response);
+            Log.e("bhimresponse",object.toString());
             int m=object.getInt("success");
 
-            if(m==0){
+            if(m==1){ Log.e("bhim","14");
                 return false;}
-            else return true;
-        } catch (JSONException e) {
+            else{  Log.e("bhim","16");return true;}
+        } catch (JSONException e) { Log.e("bhim","15");
             e.printStackTrace();
 
-        }
+        } Log.e("bhim","17");
         return false;
     }
 

@@ -3,6 +3,7 @@ package com.supergeek.junejaspc.queen;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,7 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
     public LoaderForSubmit(Context context,LeaderBoard_row data) throws MalformedURLException {
         super(context);
         this.data=data;
-        url1=context.getResources().getString(R.string.saveuser);
+        url1=context.getResources().getString(R.string.savescore);
        url=new URL(url1);
 
     }
@@ -93,12 +94,15 @@ public class LoaderForSubmit extends AsyncTaskLoader<LeaderBoard_row> {
         return string.toString();
     }
     public void checkresponse(){
-        try {
-            JSONObject object=new JSONObject(response);
-            JSONArray array=object.getJSONArray(arrayname);
+        Log.e("bhimsh11122",response);
+        /*try { Log.e("bhimsh11122",response);
+          //  JSONObject object=new JSONObject(response);
+           // JSONArray array=object.getJSONArray(arrayname);
+
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+            Log.e("bhimsh",e.getMessage());
+        }*/
 
     }
 }

@@ -8,4 +8,5 @@
     <string name="my_add_2">ca-app-pub-5750055305709604/4380756973</string>
     <string name="leaderboard">http://geekyboy.16mb.com/leaderboard.php</string>
     <string name="saveuser">http://geekyboy.16mb.com/saveusername.php</string>
+    <string name="savescore">http://geekyboy.16mb.com/savescore.php</string>
 </resources>

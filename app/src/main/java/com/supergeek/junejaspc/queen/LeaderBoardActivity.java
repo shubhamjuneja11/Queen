@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class LeaderBoardActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<LeaderBoard_row>>,SwipeRefreshLayout.OnRefreshListener {
-    private String url = getResources().getString(R.string.leaderboard);
+    private String url;
     RecyclerView recyclerView;
      static LeaderBoard_Adapter adapter;
     ArrayList<LeaderBoard_row> al;
@@ -71,6 +71,8 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
+        mAdView = (AdView) findViewById(R.id.adView);
+        url = getResources().getString(R.string.leaderboard);
         getSupportActionBar().setTitle("LeaderBoard");
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
