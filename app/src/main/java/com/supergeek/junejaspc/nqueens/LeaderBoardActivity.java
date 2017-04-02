@@ -35,20 +35,9 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     public static int level = 1;
     private int selected_level=1;
     SwipeRefreshLayout swipe;
-    private AdView mAdView;
-    @Override
-    public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
-        super.onPause();
-    }
     @Override
     protected void onResume() {
         super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
         load_data();
     }
     public void load_data() {
@@ -78,12 +67,8 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
             actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
             actionBar.setDisplayShowHomeEnabled(false); // remove the icon
         }
-        mAdView = (AdView) findViewById(R.id.adView);
         url = "http://geekyboy.16mb.com/leaderboard.php";
         getSupportActionBar().setTitle("LeaderBoard");
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         swipe=(SwipeRefreshLayout)findViewById(R.id.swipe);
         al = new ArrayList<>();
@@ -94,13 +79,6 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         selected_level=level = getIntent().getIntExtra("level", 1);
         swipe.setOnRefreshListener(this);
-        mAdView = (AdView) findViewById(R.id.adView);
-        /*AdRequest adRequest = new AdRequest.Builder()
-                .build();*/
-
-
-
-
     }
 
     @Override
@@ -123,10 +101,6 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
         });
         adapter.notifyDataSetChanged();
         swipe.setRefreshing(false);
-       /* try {
-            if (adapter.my_rank != -1)
-                recyclerView.scrollToPosition(adapter.my_rank);
-        }catch (Exception e){}*/
     }
 
     @Override
@@ -220,12 +194,5 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     @Override
     public void onRefresh() {
         reloadData();
-    }
-    @Override
-    public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
-        super.onDestroy();
     }
 }

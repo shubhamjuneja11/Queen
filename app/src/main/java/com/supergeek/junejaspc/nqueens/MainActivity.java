@@ -3,6 +3,8 @@ package com.supergeek.junejaspc.nqueens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
@@ -48,7 +50,9 @@ boolean exit=false;
        startActivity(intent);
    }
    public void exit(View view){
-       super.onBackPressed();
+       moveTaskToBack(true);
+       android.os.Process.killProcess(android.os.Process.myPid());
+       System.exit(1);
    }
    public void openhelp(View view){
        Intent intent=new Intent(this,HelpClass.class);
@@ -74,7 +78,7 @@ boolean exit=false;
             }, 2000);
         }
         else {
-            super.onBackPressed();
+        super.onBackPressed();
         }
 
     }
@@ -85,4 +89,5 @@ boolean exit=false;
         }
         super.onDestroy();
     }
+
 }

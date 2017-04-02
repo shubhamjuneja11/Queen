@@ -55,7 +55,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     ImageButton button_set[][];
     AlertDialog.Builder builder;
     InterstitialAd mInterstitialAd;
-    int i, height, width, totalbuttons, rowlimit, j, total_queens;
+    int i, height, width, totalbuttons, rowlimit, j, total_queens,addcount;
     boolean decide,game_started;
     TextView time;
     DisplayMetrics displayMetrics;
@@ -149,7 +149,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         editor =sharedPreferences.edit();
         game_started=true;
-
+        addcount=sharedPreferences.getInt("addcount",0);
 
         try {
             myurl=new URL(url);
@@ -416,30 +416,24 @@ public void resumegame(){
             dialog.setCancelable(false);
             dialog.show();
             game_started=false;
+            if(addcount%4==0) {
+                mInterstitialAd = new InterstitialAd(this);
+                mInterstitialAd.setAdUnitId("ca-app-pub-5750055305709604/4691384174");
+                AdRequest adRequest = new AdRequest.Builder()
+                        .build();
 
-            mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId("ca-app-pub-5750055305709604/4691384174");
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
+                // Load ads into Interstitial Ads
+                mInterstitialAd.loadAd(adRequest);
 
-            // Load ads into Interstitial Ads
-            mInterstitialAd.loadAd(adRequest);
-
-            mInterstitialAd.setAdListener(new AdListener() {
-                public void onAdLoaded() {
-                    showInterstitial();
-                }
-            });
-
-
-
-
-
-
-
-
-
-
+                mInterstitialAd.setAdListener(new AdListener() {
+                    public void onAdLoaded() {
+                        showInterstitial();
+                    }
+                });
+            }
+            addcount++;
+            editor.putInt("addcount",addcount);
+            editor.apply();
 
             return true;
         }
@@ -850,6 +844,8 @@ public void goback(){
     }
     public void onmainmenu(View view){
         Intent intent=new Intent(this,MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 }
