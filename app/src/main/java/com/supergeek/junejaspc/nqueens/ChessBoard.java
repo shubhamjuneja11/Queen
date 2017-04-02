@@ -111,13 +111,14 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
                 mAdView2.resume();
             }
             if(game_started) {
-                builder = new AlertDialog.Builder(this);
-
-                View view = getLayoutInflater().inflate(R.layout.newdialog, null);
-                builder.setView(view);
-                dialog = builder.create();
-                dialog.setCancelable(false);
-                dialog.show();
+                if(dialog==null) {
+                    builder = new AlertDialog.Builder(this);
+                    View view = getLayoutInflater().inflate(R.layout.newdialog, null);
+                    builder.setView(view);
+                    dialog = builder.create();
+                    dialog.setCancelable(false);
+                    dialog.show();
+                }
                 savedtime=sharedPreferences.getLong("temptime",savedtime);
 
             }
@@ -129,6 +130,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     }
     public void startgame(View view){
         dialog.dismiss();
+        dialog=null;
         tick_tock();
         game_started=true;
     }
@@ -527,6 +529,10 @@ public void resumegame(){
             Intent intent = getIntent();
             intent.putExtra("count", rowlimit);
             intent.putExtra("saved", false);
+            elapsedTime=0;
+            editor.putInt("temptime",0);
+            editor.apply();
+
             startActivity(intent);
             finish();
         }
@@ -542,6 +548,7 @@ public void resumegame(){
 
     public void onleaderboard(View view) {
        dialog.dismiss();
+        dialog=null;
        if(check_user()) {
           putandgo();
        }
@@ -561,6 +568,7 @@ public void goback(){
     try {
         if(dialog!=null)
         dialog.dismiss();
+        dialog=null;
         Intent upIntent=NavUtils.getParentActivityIntent(this);;
         if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
 
@@ -591,6 +599,7 @@ public void goback(){
         }
         else {
             dialog.dismiss();
+            dialog=null;
             goback();
            // super.onBackPressed();
         }
@@ -598,6 +607,7 @@ public void goback(){
 
     public void yessave(View view) {
         dialog.dismiss();
+        dialog=null;
 
         int y,z;
         String s="";
@@ -619,6 +629,7 @@ public void goback(){
 
     public void nosave(View view) {
         dialog.dismiss();
+        dialog=null;
         game_started=false;
         super.onBackPressed();
     }
@@ -756,6 +767,7 @@ public void goback(){
                 Toast.makeText(ChessBoard.this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
             else {
                 dialog.dismiss();
+                dialog=null;
                 editor.putString("username",user_name);
                 editor.putInt("avatar",avatar);
                 editor.apply();
@@ -835,5 +847,9 @@ public void goback(){
         if (mAdView2 != null) {
             mAdView2.destroy();
         }
+    }
+    public void onmainmenu(View view){
+        Intent intent=new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }

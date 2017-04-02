@@ -65,4 +65,13 @@
         android:layout_gravity="center"
         android:onClick="onleaderboard"
         android:text="Submit on LeaderBoard"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AppTheme.Button"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:onClick="onmainmenu"
+        android:text="Main Menu"
+        />
 </LinearLayout>
