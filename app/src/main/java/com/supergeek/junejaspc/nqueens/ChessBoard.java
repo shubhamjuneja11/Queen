@@ -66,7 +66,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     View view2;
     GradientDrawable shapeDrawable, shape2, shape3;
     public static String colors[] = new String[]{"#7333BF", "#CB2A62", "#A8AD1F", "#D34B20", "#649035", "#359053",
-            "#31B0AF", "#2C65A9", "#13EBE8", "#969734", "#ED04FC", "#FC0488", "#0480FC"};
+            "#31B0AF", "#2C65A9", "#13EBE8", "#969734", "#ED04FC", "#FC0488", "#0480FC","#7333BF", "#CB2A62", "#A8AD1F", "#D34B20"};
     private String user_name, mytime,savedgame;
     int mylevel,avatar=0;
     private final int REFRESH_RATE = 100;
