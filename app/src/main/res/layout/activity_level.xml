@@ -48,5 +48,14 @@
         <include layout="@layout/level_inner_recycler"></include>
 
     </android.support.v4.widget.NestedScrollView>
-
+    <com.google.android.gms.ads.NativeExpressAdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adUnitId="ca-app-pub-5750055305709604/5293193829"
+        ads:adSize="320x150"
+        android:layout_gravity="bottom"
+        >
+    </com.google.android.gms.ads.NativeExpressAdView>
 </android.support.design.widget.CoordinatorLayout>

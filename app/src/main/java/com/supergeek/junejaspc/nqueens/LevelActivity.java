@@ -17,6 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +62,7 @@ LevelAdapter adapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         collapsingToolbarLayout=(CollapsingToolbarLayout)findViewById(R.id.collapse_toolbar);
@@ -89,6 +93,7 @@ LevelAdapter adapter;
         adapter=new LevelAdapter(this,levels);
         recyclerView.setAdapter(adapter);
         preparedata();
+
 
     }
     public void preparedata(){

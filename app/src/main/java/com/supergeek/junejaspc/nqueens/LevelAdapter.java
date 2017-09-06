@@ -1,5 +1,6 @@
 package com.supergeek.junejaspc.nqueens;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
 
 import java.util.List;
 
@@ -22,12 +26,14 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
     LevelActivity levelClass;
     List<LevelClass> levels;
     SharedPreferences sharedPreferences;
+    Context context;
 
     boolean a;
     public LevelAdapter(LevelActivity levelClass,List<LevelClass> levels){
         this.levels=levels;
         this.levelClass=levelClass;
         decide=new Boolean[14];
+        this.context=levelClass;
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(levelClass);
         for(int i=1;i<=13;i++){
             a=sharedPreferences.getBoolean(String.valueOf(i),false);
@@ -37,12 +43,15 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
             else decide[i]=false;
         }
     }
+   /* AdRequest request = new AdRequest.Builder().build();
+        adView.loadAd(request);*/
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.levelrow, parent, false);
-        itemView.setOnClickListener(levelClass);
-        return new ViewHolder(itemView);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.levelrow, parent, false);
+            itemView.setOnClickListener(levelClass);
+            return new ViewHolder(itemView);
+
     }
 
     @Override
@@ -85,4 +94,5 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
             done=(ImageView)itemView.findViewById(R.id.done);
         }
     }
+
 }

@@ -416,7 +416,7 @@ public void resumegame(){
             dialog.setCancelable(false);
             dialog.show();
             game_started=false;
-            if(addcount%4==0) {
+            if(addcount%2==0) {
                 mInterstitialAd = new InterstitialAd(this);
                 mInterstitialAd.setAdUnitId("ca-app-pub-5750055305709604/4691384174");
                 AdRequest adRequest = new AdRequest.Builder()
@@ -760,14 +760,16 @@ public void goback(){
             if (done)
                 Toast.makeText(ChessBoard.this, "Username in use.Try a  different one.", Toast.LENGTH_SHORT).show();
             else {
-                dialog.dismiss();
-                dialog=null;
-                editor.putString("username",user_name);
-                editor.putInt("avatar",avatar);
-                editor.apply();
+                if(dialog!=null) {
+                    dialog.dismiss();
+                    dialog = null;
+                    editor.putString("username", user_name);
+                    editor.putInt("avatar", avatar);
+                    editor.apply();
 
-                Toast.makeText(ChessBoard.this, "Username created", Toast.LENGTH_SHORT).show();
-                putandgo();
+                    Toast.makeText(ChessBoard.this, "Username created", Toast.LENGTH_SHORT).show();
+                    putandgo();
+                }
 
             }
 
