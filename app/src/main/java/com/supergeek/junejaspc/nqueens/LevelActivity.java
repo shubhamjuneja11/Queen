@@ -75,6 +75,7 @@ LevelAdapter adapter;
         lev[10]="14x14";
         lev[11]="15x15";
         lev[12]="16x16";
+
         recyclerView=(RecyclerView)findViewById(R.id.recycler);
         levels=new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
