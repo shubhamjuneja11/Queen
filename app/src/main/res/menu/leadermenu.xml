@@ -64,4 +64,40 @@
         android:id="@+id/level13"
         android:title="Level 13"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/level14"
+        android:title="Level 14"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/level15"
+        android:title="Level 15"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/level16"
+        android:title="Level 16"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/level17"
+        android:title="Level 17"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/level18"
+        android:title="Level 18"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/level19"
+        android:title="Level 19"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/level20"
+        android:title="Level 20"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/level21"
+        android:title="Level 21"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/level22"
+        android:title="Level 22"
+        app:showAsAction="never" />
 </menu>

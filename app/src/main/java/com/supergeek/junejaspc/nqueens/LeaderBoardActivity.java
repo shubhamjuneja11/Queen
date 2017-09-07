@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -34,10 +35,15 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     long a, b;
     public static int level = 1;
     private int selected_level=1;
+    int visibleItemCount,totalItemCount,pastVisiblesItems;
+    LinearLayoutManager mLayoutManager;
     SwipeRefreshLayout swipe;
+    static boolean loading=true;
+    static int count=0;
     @Override
     protected void onResume() {
         super.onResume();
+        count=0;
         load_data();
     }
     public void load_data() {
@@ -47,8 +53,8 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
         if (network != null && network.isConnected()) {
 
             LoaderManager loaderManager = getSupportLoaderManager();
-            al.clear();
-            adapter.notifyDataSetChanged();
+          //  al.clear();
+
             loaderManager.restartLoader(0,null,this).forceLoad();
         } else {
             Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
@@ -67,40 +73,62 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
             actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
             actionBar.setDisplayShowHomeEnabled(false); // remove the icon
         }
-        url = "http://geekyboy.16mb.com/leaderboard.php";
+        url = "http://geekyboy.16mb.com/leader.php";
         getSupportActionBar().setTitle("LeaderBoard");
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         swipe=(SwipeRefreshLayout)findViewById(R.id.swipe);
         al = new ArrayList<>();
         adapter = new LeaderBoard_Adapter(al, this);
         recyclerView.setAdapter(adapter);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         selected_level=level = getIntent().getIntExtra("level", 1);
         swipe.setOnRefreshListener(this);
+
+
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mLayoutManager=(LinearLayoutManager)mLayoutManager;
+                if(dy > 0) //check for scroll down
+                {
+                    visibleItemCount = mLayoutManager.getChildCount();
+                    totalItemCount =mLayoutManager.getItemCount();
+                    pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+                    if(loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            Log.e("abcd", "page");
+                            loading = false;
+                            reloadData();
+                        }
+                    }
+
+                }
+            }
+        });
+
     }
 
     @Override
     public Loader<ArrayList<LeaderBoard_row>> onCreateLoader(int id, Bundle args) {
 
-        return new MyLoader(this, url, al,adapter);
+        return new MyLoader(this, url, al,adapter,count);
 
     }
 
     @Override
     public void onLoadFinished(Loader<ArrayList<LeaderBoard_row>> loader, ArrayList<LeaderBoard_row> data) {
-        Collections.sort(al, new Comparator<LeaderBoard_row>() {
-            @Override
-            public int compare(LeaderBoard_row o1, LeaderBoard_row o2) {
-                a = Long.valueOf(o1.getTime());
-                b = Long.valueOf(o2.getTime());
-                if (a < b) return -1;
-                else return 1;
-            }
-        });
         adapter.notifyDataSetChanged();
         swipe.setRefreshing(false);
+        loading=true;
     }
 
     @Override
@@ -162,6 +190,33 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
             case R.id.level13:
                 selected_level = 13;
                 break;
+            case R.id.level14:
+                selected_level = 14;
+                break;
+            case R.id.level15:
+                selected_level = 15;
+                break;
+            case R.id.level16:
+                selected_level = 16;
+                break;
+            case R.id.level17:
+                selected_level = 17;
+                break;
+            case R.id.level18:
+                selected_level = 18;
+                break;
+            case R.id.level19:
+                selected_level = 19;
+                break;
+            case R.id.level20:
+                selected_level = 20;
+                break;
+            case R.id.level21:
+                selected_level = 21;
+                break;
+            case R.id.level22:
+                selected_level = 22;
+                break;
         }
         invalidateOptionsMenu();
         reloadData();
@@ -170,9 +225,11 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
     public void reloadData(){
         if(selected_level!=level){
             level=selected_level;
+            al.clear();
+            count=0;
         }
-        al.clear();
-        adapter.notifyDataSetChanged();
+        else count++;
+        Log.e("abcd",count+"");
         load_data();
     }
 
@@ -193,6 +250,9 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
 
     @Override
     public void onRefresh() {
-        reloadData();
+        level=selected_level;
+        al.clear();
+        count=0;
+        load_data();
     }
 }

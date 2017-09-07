@@ -3,6 +3,7 @@ package com.supergeek.junejaspc.nqueens;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,13 +34,14 @@ ArrayList<LeaderBoard_row>al;
     Context context;
     static String response;
     LeaderBoard_Adapter adapter;
-    public MyLoader(Context context,String url,ArrayList<LeaderBoard_row> al,LeaderBoard_Adapter adapter) {
+    int count;
+    public MyLoader(Context context,String url,ArrayList<LeaderBoard_row> al,LeaderBoard_Adapter adapter,int count) {
         super(context);
         this.url=url;
         this.context=context;
         this.al=al;
         this.adapter=adapter;
-
+        this.count=count;
 
     }
 
@@ -66,9 +68,10 @@ ArrayList<LeaderBoard_row>al;
         connection.setReadTimeout(15000);
         connection.setDoInput(true);
         connection.setDoOutput(true);
-
+        Log.e("datamu",LeaderBoardActivity.count+"");
         Uri.Builder builder = new Uri.Builder()
-                .appendQueryParameter("level",String.valueOf(LeaderBoardActivity.level));
+                .appendQueryParameter("level",String.valueOf(LeaderBoardActivity.level))
+                .appendQueryParameter("count",String.valueOf(LeaderBoardActivity.count));
         String query = builder.build().getEncodedQuery();
 
         OutputStream os = connection.getOutputStream();
@@ -100,6 +103,8 @@ ArrayList<LeaderBoard_row>al;
                     int icon = jsonObject1.getInt("avatar");
                     LeaderBoard_row score = new LeaderBoard_row(user, level, time, icon);
                     al.add(score);
+                    if(i==0)
+                        Log.e("mydata",user);
 
                 }
             }

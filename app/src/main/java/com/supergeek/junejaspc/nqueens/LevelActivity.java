@@ -29,7 +29,7 @@ LevelAdapter adapter;
     List<LevelClass>levels;
     String lev[];
     int a=4;
-    int n=17;
+
     Intent intent;
     AlertDialog dialog;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -40,11 +40,11 @@ LevelAdapter adapter;
         super.onResume();
         boolean a,b;
 
-        LevelActivity.decide=new Boolean[18];
-        completed=new Boolean[18];
+        LevelActivity.decide=new Boolean[25];
+        completed=new Boolean[25];
         if(sharedPreferences==null)
             sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-        for(int i=1;i<=17;i++){
+        for(int i=1;i<=22;i++){
             a=sharedPreferences.getBoolean(String.valueOf(i),false);
 
             if(!a)
@@ -67,7 +67,7 @@ LevelAdapter adapter;
         setSupportActionBar(toolbar);
         collapsingToolbarLayout=(CollapsingToolbarLayout)findViewById(R.id.collapse_toolbar);
         collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this,R.color.colorPrimary));
-        lev=new String[17];
+        lev=new String[22];
         lev[0]="4x4";
         lev[1]="5x5";
         lev[2]="6x6";
@@ -85,6 +85,12 @@ LevelAdapter adapter;
         lev[14]="18x18";
         lev[15]="19x19";
         lev[16]="20x20";
+        lev[17]="21x21";
+        lev[18]="22x22";
+        lev[19]="23x23";
+        lev[20]="24x24";
+        lev[21]="25x25";
+
         recyclerView=(RecyclerView)findViewById(R.id.recycler);
         levels=new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -114,6 +120,12 @@ LevelAdapter adapter;
         levels.add(new LevelClass(15,"Level 15","18x18"));
         levels.add(new LevelClass(16,"Level 16","19x19"));
         levels.add(new LevelClass(17,"Level 17","20x20"));
+
+        levels.add(new LevelClass(18,"Level 18","21x21"));
+        levels.add(new LevelClass(19,"Level 19","22x22"));
+        levels.add(new LevelClass(20,"Level 20","23x23"));
+        levels.add(new LevelClass(21,"Level 21","24x24"));
+        levels.add(new LevelClass(22,"Level 22","25x25"));
         adapter.notifyDataSetChanged();
     }
 
@@ -152,6 +164,7 @@ LevelAdapter adapter;
     public void noresume(View view){
         dialog.dismiss();
         intent=new Intent(LevelActivity.this,ChessBoard.class);
+
         intent.putExtra("count",a);
         intent.putExtra("saved",false);
         startActivity(intent);

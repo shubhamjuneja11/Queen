@@ -65,8 +65,11 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     boolean saved;
     View view2;
     GradientDrawable shapeDrawable, shape2, shape3;
-    public static String colors[] = new String[]{"#7333BF", "#CB2A62", "#A8AD1F", "#D34B20", "#649035", "#359053",
-            "#31B0AF", "#2C65A9", "#13EBE8", "#969734", "#ED04FC", "#FC0488", "#0480FC","#7333BF", "#CB2A62", "#A8AD1F", "#D34B20"};
+    public static String colors[] =
+            new String[]{"#7333BF", "#CB2A62", "#A8AD1F", "#D34B20", "#649035", "#359053",
+            "#31B0AF", "#2C65A9", "#13EBE8", "#969734", "#85CBFE", "#F7B7C9",
+            "#FF8181","#E68DFC", "#B1B1B6", "#D18CFE", "#D0D2D4", "#C797F4",
+            "#13EBE8", "#A4FEFF", "#FAB182", "#FDA9BF"};
     private String user_name, mytime,savedgame;
     int mylevel,avatar=0;
     private final int REFRESH_RATE = 100;
@@ -158,6 +161,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
         }
 
         rowlimit = getIntent().getIntExtra("count", 4);
+
         //savedtime=0;
             saved = getIntent().getBooleanExtra("saved", false);
             if(saved)
