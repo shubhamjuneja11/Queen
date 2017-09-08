@@ -97,7 +97,6 @@ public class LeaderBoardActivity extends AppCompatActivity implements LoaderMana
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                mLayoutManager=(LinearLayoutManager)mLayoutManager;
                 if(dy > 0) //check for scroll down
                 {
                     visibleItemCount = mLayoutManager.getChildCount();

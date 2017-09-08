@@ -55,7 +55,7 @@ public class ChessBoard extends AppCompatActivity implements View.OnClickListene
     ImageButton button_set[][];
     AlertDialog.Builder builder;
     InterstitialAd mInterstitialAd;
-    int i, height, width, totalbuttons, rowlimit, j, total_queens,addcount;
+    int i, height, width, totalbuttons, rowlimit, j, total_queens,addcount,backcount;
     boolean decide,game_started;
     TextView time;
     DisplayMetrics displayMetrics;
@@ -583,6 +583,24 @@ public void goback(){
 }
     @Override
     public void onBackPressed() {
+        backcount=sharedPreferences.getInt("backcount",1);
+        if(backcount%9==0){
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-5750055305709604/4691384174");
+            AdRequest adRequest = new AdRequest.Builder()
+                    .build();
+
+            // Load ads into Interstitial Ads
+            mInterstitialAd.loadAd(adRequest);
+
+            mInterstitialAd.setAdListener(new AdListener() {
+                public void onAdLoaded() {
+                    showInterstitial();
+                }
+            });
+        }
+        editor.putInt("backcount",backcount+1);
+        editor.apply();
 
         stop_tick_tock();
         game_started=false;

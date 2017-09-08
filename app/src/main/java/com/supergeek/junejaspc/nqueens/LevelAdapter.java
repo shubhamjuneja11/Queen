@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.NativeExpressAdView;
 
 import java.util.List;
 
@@ -32,15 +30,16 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
     public LevelAdapter(LevelActivity levelClass,List<LevelClass> levels){
         this.levels=levels;
         this.levelClass=levelClass;
-        decide=new Boolean[14];
+        decide=new Boolean[30];
         this.context=levelClass;
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(levelClass);
-        for(int i=1;i<=13;i++){
+        for(int i=1;i<=22;i++){
             a=sharedPreferences.getBoolean(String.valueOf(i),false);
 
             if(!a)
                 decide[i]=true;
             else decide[i]=false;
+
         }
     }
    /* AdRequest request = new AdRequest.Builder().build();
@@ -62,11 +61,12 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
         try {
             String numberOnly= levelClass.getLevelno().replaceAll("[^0-9]", "");
             int level = Integer.valueOf(numberOnly);
-            if(decide[level]){
+
+            if(decide[level]){//Log.e("cvbn",level+"");
                 holder.save.setAlpha(0.1f);
 
             }
-            else {
+            else {//Log.e("cvbn",level+"vvv");
                 holder.save.setAlpha(1.0f);
 
             }
@@ -75,6 +75,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
             else holder.done.setAlpha(1.0f);
         }
         catch (Exception e){
+            //Log.e("cvbn","afg");
         }
     }
 
